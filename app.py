@@ -153,7 +153,7 @@ async def get_attractions(
     cursor = conn.cursor(dictionary=True)
 
     try:
-        page_size = 12
+        page_size = 8
         offset = page * page_size
 
         sql = """
