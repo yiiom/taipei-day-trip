@@ -1,11 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Index</title>
+  <title>台北一日遊</title>
+  <link rel="stylesheet" href="/static/index.css">
 </head>
+
 <body>
-  
+  <header class="nav-bar">
+    <div class="nav-content">
+      <a class="site-title" href="/">台北一日遊</a> <!-- href="/" 點擊後回到首頁 -->
+      <nav class="nav-links">
+        <a class="booking-link" href="/booking">預訂行程</a>
+        <a class="auth-link" href="#">登入/註冊</a> <!-- href="#"目前還沒有真正的登入頁面所以先暫時不跳轉 -->
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero-section"> <!-- 負責整個主視覺區域 -->
+      <div class="hero-content"> <!-- 負責主視覺裡面的文字與搜尋內容 -->
+        <div class="slogan">
+        <h1>輕鬆享受台北一日悠閒</h1>
+        <p>探索每個角落，體驗城市的深度旅遊行程</p>
+      </div>
+        <div class="search-bar"> <!-- 搜尋列的外層容器 -->
+          <div class="category-wrapper"> <!-- 點擊分類後顯示選單 -->
+          <button id="category-button" type="button">
+          <span id="selected-category">全部分類</span>
+          <span>▼</span>
+          </button>
+          <div id="category-menu" class="category-menu hidden"></div> <!-- 分類選單 hidden一開始先隱藏分類選單-->
+          </div>
+          <input id="keyword-input" type="text" placeholder="輸入景點名稱查詢"> 
+          <!--建立景點搜尋輸入框 type="text":可以輸入文字 placeholder輸入前顯示的提示文字 -->
+          <button id="search-button" type="button">
+            <img src="/static/images/search.png" alt="搜尋">
+          </button>
+        </div>
+      </div>
+    </section>
+    <section class="mrt-section">
+      <button id="mrt-left-button" class="mrt-arrow mrt-arrow-left" type="button"> <!-- 左切換按鈕 -->
+        <img src="/static/images/arrow-left.png" alt="上一組捷運站"> <!-- 顯示左箭頭圖片 -->
+      </button>
+      <div id="mrt-list" class="mrt-list"></div>
+      <button id="mrt-right-button" class="mrt-arrow mrt-arrow-right" type="button"> <!-- 右切換按鈕 -->
+        <img src="/static/images/arrow-right.png" alt="下一組捷運站"> <!-- 顯示右箭頭圖片 -->
+      </button>
+    </section>
+    <section class="attraction-section"> <!-- 負責景點列表區域 -->
+      <div id="attraction-list" class="attraction-list"></div>
+      <div id="load-more-sentinel" aria-hidden="true"></div>
+    </section>
+  </main>
+  <footer class="footer">
+    <p class="footer-text">COPYRIGHT © 2021 台北一日遊</p>
+  </footer>
+<script src="/static/index.js"></script>
 </body>
+
 </html>

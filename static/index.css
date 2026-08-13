@@ -1,0 +1,514 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Noto Sans TC", sans-serif;
+    font-size: 16px;
+    color: #666666;
+}
+
+.nav-bar {
+    height: 54px;
+    padding: 10px 0;
+    background-color: #ffffff;
+}
+
+.nav-content {
+    max-width: 1200px;
+    height: 34px;
+    padding: 0 10px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* 網站名稱靠左 導覽連結靠右 中間的剩餘空間會自動分配 */
+}
+
+.site-title {
+    width: 150px; /* 網站名稱區塊寬度 */
+    height: 34px; /* 網站名稱區塊高度 */
+    font-size: 30px; /*台北一日遊文字大小 */
+    font-weight: 700; /* 名稱粗體 */
+    line-height: 34px; /* 文字行高 */
+    color: #448899; /* 網站名稱文字顏色 */
+    text-decoration: none; /* 移除<a>連結預設底線 */
+}
+.nav-links { /* 右側預訂行程和登入/註冊兩個連結的容器 */
+    display: flex; /* 預訂行程和登入/註冊排列在同一水平列 */
+    height: 34px; /* 右側導覽連結區的高度 */
+    width: 175px;
+    align-items: center; /* 讓預訂行程和登入/註冊垂直置中 */
+    justify-content: space-between;
+}
+.booking-link,
+.auth-link {
+      display: flex; /* 使用 Flex 排版方便讓文字在按鈕區域內對齊 */
+      align-items: center; /* 連結文字在各自的按鈕高度中垂直置中 */
+      padding: 10px; /* 兩個導覽連結內距 */
+      font-size: 16px; /* 兩個導覽連結文字大小 */
+      font-weight: 500; /* 導覽連結使用 Medium 字重 */
+      line-height: 13.3px; /* 導覽連結的文字行高 */
+      color: #666666; 
+      text-decoration: none;
+}
+.hero-section {
+      height: 320px; /* Hero 高度 */
+      background-image: url("/static/images/welcome.png"); /* Hero 背景圖片 */
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      z-index: 1; /* 讓展開的分類選單覆蓋下方 MRT 列 */
+}
+.hero-content {
+  max-width: 1200px;
+  height: 169px;
+  margin: 0 auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  position: absolute;
+  top: 75px;
+  width: 1200px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.hero-content h1 {
+  margin: 0;
+  height: 41px;
+  font-size: 28px;
+  font-weight: 700; /* Bold */
+  line-height: 24px;
+  color: #ffffff;
+}
+.hero-content p {
+  margin: 0;
+  height: 22px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 13.3px;
+  color: #ffffff;
+}
+.slogan {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.search-bar {
+  display: flex;
+  width: 460px;
+  height: 46px;
+  border-radius: 5px;
+  box-shadow: 0 0 20px #aabbcc;
+}
+.category-wrapper {  /* 右側的分類選單 */
+  width: 100px;
+  height: 46px;
+  position: relative;
+}
+#category-button {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 5px 0 0 5px; /*左上右上右下左下圓角*/
+    background-color: #eeeeee;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 8px;
+    gap: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 13.3px;
+    color: #000000;
+}
+
+/* 避免短分類名稱（例如「其他」）在按鈕內被撐開或換行。 */
+#selected-category {
+  flex: 0 0 auto;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+#keyword-input {  /* 中間的景點名稱輸入框 */
+    width: 300px;
+    height: 46px;
+    padding: 15px;
+    border: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 13.3px;
+    color: #757575;
+    background-color: #ffffff;
+}
+#search-button {
+    width: 60px;
+    height: 46px;
+    padding: 8px 15px; 
+    border: 0;
+    background-color: #448899;
+    border-radius: 0 5px 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#search-button img {
+  width: 30px;
+  height: 30px;
+}
+.category-menu { /* 分類選單浮在搜尋列下方 不會把 Hero 或其他內容往下推 */
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 300px;
+  height: 160px;
+  display: grid; /* 選單能建立 3 欄 × 4 列的分類項目排列 */
+  grid-template-columns: repeat(3, 1fr); /* 選單分成等寬的 3 欄；1fr 表示每欄平均分配一份寬度 */
+  grid-template-rows: repeat(4, 1fr); /* 選單分成等高的 4 列 */
+  background-color: #ffffff;
+  border-radius: 5px;
+  box-shadow: 0 0 20px #aabbcc;
+  z-index: 1; /* 下拉選單展開時浮在 Hero 內容上方 不會被其他元素遮住 */
+}
+.category-menu button {
+  display: flex; 
+  align-items: center; /* 文字在上下方向置中 */
+  justify-content: center; /* 文字在左右方向置中 */
+  border: 0; /* 移除按鈕預設邊框 */
+  border-radius: 8px; /* 每個分類項目的圓角 */
+  padding: 10px 0; /* 上下保留 10px 內距，左右不加內距 */
+  background-color: #ffffff; 
+  color: #000000; 
+  font-family: "Noto Sans TC", sans-serif; 
+  font-size: 14px; 
+  font-weight: 500; 
+  line-height: 100%; 
+  text-align: center; /* 文字水平置中 */
+}
+
+.category-menu button:hover {
+  background-color: #eeeeee; /* 滑鼠移到分類項目時的灰色背景 */
+}
+
+.hidden {
+  display: none; /* 有 hidden 類別時，完全隱藏分類選單 */
+}
+.mrt-section {
+  width: 1200px; /* 捷運列固定寬度 1200px */
+  height: 110px; /* 含主視覺下方 40px 留白、捷運列與底部 20px */
+  margin: 0 auto; /* 讓 1200px 的捷運列在頁面中央 */
+  display: flex; /* 讓左箭頭、站名區、右箭頭橫向排列 */
+  padding: 40px 0 20px; /* 對齊 Figma：上方 40px、下方 20px */
+}
+
+.mrt-arrow {
+  width: 47px; /*左右箭頭容器寬度 47px */
+  height: 50px; /* 左右箭頭容器高度 50px */
+  border: none; /* 移除 button 預設邊框 */
+  background-color: transparent; /* 讓按鈕背景透明 */
+  cursor: pointer; /* 滑鼠移到按鈕時顯示可點擊游標 */
+  flex-shrink: 0; /* 不讓左右箭頭被中間清單擠壓縮小 */
+}
+.mrt-arrow-left {
+  padding: 9px 0 9px 15px;
+}
+
+.mrt-arrow-right {
+  padding: 9px 15px 9px 0;
+}
+
+.mrt-arrow img {
+  width: 32px; /* 箭頭圖片寬度 32px */
+  height: 32px; /* 箭頭圖片高度 32px */
+  display: block; /* 移除圖片下方可能出現的空白 */
+}
+
+.mrt-list {
+  width: 1106px; /* 中間捷運站區域寬度 1106px */
+  height: 50px; /* 中間捷運站區域高度 50px */
+  padding: 13px 10px; /* 上下 13px、左右 10px */
+  display: flex; /* 讓之後 JavaScript 新增的站名橫向排列 */
+  align-items: center; /* 讓站名在 50px 高度中垂直置中 */
+  overflow: hidden; /* 超出可視範圍的站名先隱藏，之後由箭頭切換 */
+  white-space: nowrap; /* 不讓站名換到下一行 */
+}
+
+.mrt-item {
+  height: 24px; /* 每個捷運站項目高度 24px */
+  padding: 5px 15px; /* 上下 5px、左右 15px */
+  font-size: 16px; /* 文字大小 16px */
+  font-weight: 500; 
+  line-height: 13.3px; /* 文字行高 13.3px */
+  color: #666666; /* FGray 70 */
+  display: flex; 
+  align-items: center; /* 讓文字垂直置中 */
+  justify-content: center; /* 讓文字水平置中 */
+  flex-shrink: 0; /* 不讓各捷運站名稱被壓縮 */
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.attraction-section {
+  width: 1200px; /* 景點區外框寬度1200px */
+  min-height: 816px; /* 初始版面保留 Figma 三列卡片的高度 */
+  height: auto; /* 自動載入更多景點時可向下延伸，不讓頁尾覆蓋卡片 */
+  margin: 0 auto 40px; /* Figma 景點區下方保留 40px */
+  padding: 15px; /* 景點區四周保留 15px 內距 */
+}
+
+.attraction-list {
+  width: 1170px; /* 景點寬度1170px */
+  min-height: 786px; /* 初始版面符合三列卡片與間距的總高度 */
+  height: auto; /* 讓無限捲動追加的卡片正常撐開列表 */
+  display: grid; /* 使用 Grid 建立景點卡片網格 */
+  grid-template-columns: repeat(4, 270px); /* 每列放置四張 270px 寬的卡片 */
+  grid-auto-rows: 242px; /* 每張景點卡片高度固定為 242px */
+  column-gap: 30px; /* 景點卡片左右間距 30px */
+  row-gap: 30px; /* 景點卡片上下間距 30px */
+}
+
+.attraction-card {
+  width: 270px; /* 景點卡片寬度270px */
+  height: 242px; /* 景點卡片高度242px */
+  border: 1px solid #e8e8e8; 
+  border-radius: 5px; 
+  overflow: hidden; /* 隱藏超出圓角卡片的圖片內容 */
+  background-color: #ffffff; /* 卡片背景 */
+}
+
+.attraction-card-link {
+  display: block; /* 讓連結填滿整張卡片 */
+  width: 100%; /* 連結寬度填滿卡片 */
+  height: 100%; /* 連結高度填滿卡片 */
+  color: inherit; /* 讓文字沿用外層文字顏色 */
+  text-decoration: none; /* 移除連結預設底線 */
+}
+
+.attraction-image-container {
+  position: relative; /* 讓景點名稱可以定位在圖片底部 */
+  width: 100%; /* 圖片容器寬度填滿卡片 */
+  height: 197px; /* 圖片容器高度197px */
+}
+
+.attraction-image {
+  display: block; /* 移除圖片元素預設的底部空白 */
+  width: 100%; /* 圖片寬度填滿圖片容器 */
+  height: 100%; /* 圖片高度填滿圖片容器 */
+  object-fit: cover; /* 維持圖片比例並裁切多餘影像 */
+}
+
+.attraction-name {
+  position: absolute; /* 將景點名稱放在圖片上方 */
+  right: 0; /* 名稱背景貼齊圖片右側 */
+  bottom: 0; /* 名稱背景貼齊圖片底部 */
+  left: 0; /* 名稱背景延伸到圖片左側 */
+  height: 40px; /* 景點名稱覆蓋區高度符合 Figma 規格 */
+  padding: 10px; /* 景點名稱保留 Figma 的 10px 內距 */
+  overflow: hidden; /* 避免過長名稱超出黑色背景區 */
+  background-color: rgba(0, 0, 0, 0.6); /* 黑色 60% 透明背景 */
+  color: #ffffff; /* 景點名稱白色文字 */
+  font-size: 16px; /* 景點名稱字體大小 */
+  font-weight: 700; 
+  line-height: 13.3px; /* 景點名稱行高 */
+  white-space: nowrap; /* 景點名稱維持單行顯示 */
+  text-overflow: ellipsis; /* 過長名稱以省略號結尾 */
+}
+
+.attraction-details {
+  width: 100%; /* 資訊區寬度填滿卡片 */
+  height: 43px; /* 扣除卡片上下邊框後，讓卡片總高度維持 242px */
+  padding: 10px; /* 資訊區四周 10px 內距 */
+  background-color: #ffffff; /* 資訊區背景白色 */
+}
+
+.attraction-info {
+  display: flex; /* 讓捷運站與類別水平排列 */
+  align-items: center; /* 讓資訊文字垂直置中 */
+  justify-content: space-between; /* 讓兩側資訊分別靠左與靠右 */
+  width: 100%; /* 資訊列寬度填滿內容區 */
+  height: 23px; /* 配合資訊區 43px 與上下 10px padding 的內容高度 */
+}
+
+.attraction-mrt,
+.attraction-category {
+  overflow: hidden; /* 避免文字超出卡片資訊區 */
+  color: #757575; 
+  font-size: 16px; /* 資訊文字大小 */
+  font-weight: 500; 
+  line-height: 13.3px; /* 資訊文字行高 */
+  white-space: nowrap; /* 資訊文字維持單行顯示 */
+  text-overflow: ellipsis; /* 過長資訊以省略號顯示 */
+}
+
+.footer {
+  width: 100%; /* 寬度填滿整個瀏覽器視窗 */
+  height: 104px; 
+  padding: 40px 0; /* 上下各保留 40px 內距 */
+  background-color: #757575; 
+  display: flex; 
+  align-items: center; /* 文字垂直置中 */
+  justify-content: center; /* 文字水平置中 */
+}
+
+.footer-text {
+  width: 234px; /* 文字容器寬度 */
+  height: 24px; /* 文字容器高度 */
+  margin: 0; /* 移除 p 元素預設外距 */
+  padding: 5px 0; /* 文字容器上下各保留 5px 內距 */
+  color: #ffffff; 
+  font-family: "Noto Sans TC", sans-serif; 
+  font-size: 16px; 
+  font-weight: 700; 
+  line-height: 14px; 
+  text-align: center; 
+}
+
+.empty-message {
+  margin: 0;
+  padding: 20px;
+  color: #757575;
+}
+
+#load-more-sentinel {
+  width: 100%;
+  height: 1px;
+}
+
+.mrt-arrow:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+@media (max-width: 600px) {
+  /* 手機版保留完整 360px 版面寬度，不讓桌面瀏覽器的捲軸吃掉內容空間。 */
+  html {
+    scrollbar-width: none;
+  }
+
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-bar {
+    width: 100%; /* 導覽列寬度 */
+    height: 54px; /* 導覽列高度 */
+    padding: 10px 0; /* 上下內距 */
+  }
+
+  .nav-content {
+    width: 360px; /* 手機版導覽內容寬度 */
+    max-width: 100%; /* 不超出手機畫面 */
+    height: 34px; /* 導覽內容高度 */
+    padding: 0 10px; /* 左右內距 */
+  }
+
+  .site-title {
+    width: 150px; /* Logo 寬度 */
+    height: 34px; /* Logo 高度 */
+    font-size: 30px; /* Logo 字體大小 */
+    line-height: 34px; /* Logo 行高 */
+    flex-shrink: 0; /* 避免 Logo 被壓縮 */
+  }
+
+  .nav-links {
+    width: auto; /* 導覽按鈕區寬度 */
+    height: 34px; /* 導覽按鈕區高度 */
+    flex-shrink: 0; /* 避免按鈕區被壓縮 */
+    justify-content: space-between; /* 兩個按鈕分開排列 */
+  }
+
+  .booking-link,
+  .auth-link {
+    padding: 10px; /* 按鈕內距 */
+    font-size: 16px; /* 文字大小 */
+    font-weight: 500; 
+    line-height: 13.3px; /* 文字行高 */
+    white-space: nowrap; /* 避免文字換行 */
+    flex-shrink: 0; /* 避免文字被壓縮 */
+  }
+
+  .hero-section {
+    height: 320px;
+    background-image: url("/static/images/welcome-mobile.png");
+    background-position: center;
+  }
+
+  .hero-content {
+    top: 75px;
+    left: 10px;
+    width: calc(100% - 20px);
+    max-width: 340px;
+    height: auto;
+    padding: 10px;
+    margin: 0;
+    transform: none;
+  }
+
+  .search-bar {
+    width: 100%;
+    max-width: 460px;
+  }
+
+  #keyword-input {
+    min-width: 0;
+    flex: 1;
+    width: auto;
+  }
+
+  .category-menu {
+    z-index: 3;
+  }
+
+  .mrt-section {
+    width: 100%;
+    height: 110px;
+    padding: 40px 0 20px;
+  }
+
+  .mrt-arrow {
+    width: 47px;
+  }
+
+  .mrt-list {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .attraction-section {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 15px;
+  }
+
+  .attraction-list {
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .attraction-card {
+    width: 100%;
+    height: 280px;
+    flex: 0 0 280px;
+  }
+
+  .attraction-image-container {
+    height: 235px;
+  }
+
+  .attraction-details {
+    height: 43px;
+  }
+
+  .footer {
+    height: 104px;
+  }
+}
