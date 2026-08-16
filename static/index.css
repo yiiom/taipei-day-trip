@@ -433,7 +433,7 @@ body {
   }
 
   .nav-links {
-    width: auto; /* 導覽按鈕區寬度 */
+    width: 175px; /* 導覽按鈕區寬度，保留兩個文字完整顯示的空間 */
     height: 34px; /* 導覽按鈕區高度 */
     margin-left: auto;
     flex-shrink: 0; /* 避免按鈕區被壓縮 */
@@ -442,7 +442,7 @@ body {
 
   .booking-link,
   .auth-link {
-    padding: 10px; /* 按鈕內距 */
+    padding: 10px 0; /* 不額外吃掉左右空間，避免右側文字被裁切 */
     font-size: 16px; /* 文字大小 */
     font-weight: 500; 
     line-height: 13.3px; /* 文字行高 */
