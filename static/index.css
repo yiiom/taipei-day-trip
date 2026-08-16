@@ -62,6 +62,7 @@ body {
       z-index: 1; /* 讓展開的分類選單覆蓋下方 MRT 列 */
 }
 .hero-content {
+  width: 100%;
   max-width: 1200px;
   height: 169px;
   margin: 0 auto;
@@ -71,7 +72,6 @@ body {
   gap: 25px;
   position: absolute;
   top: 75px;
-  width: 1200px;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -195,7 +195,8 @@ body {
   display: none; /* 有 hidden 類別時，完全隱藏分類選單 */
 }
 .mrt-section {
-  width: 1200px; /* 捷運列固定寬度 1200px */
+  width: 100%; /* 小於桌面寬度時跟著畫面縮小 */
+  max-width: 1200px; /* 桌面版最大寬度 */
   height: 110px; /* 含主視覺下方 40px 留白、捷運列與底部 20px */
   margin: 0 auto; /* 讓 1200px 的捷運列在頁面中央 */
   display: flex; /* 讓左箭頭、站名區、右箭頭橫向排列 */
@@ -251,7 +252,8 @@ body {
 }
 
 .attraction-section {
-  width: 1200px; /* 景點區外框寬度1200px */
+  width: 100%; /* 小於桌面寬度時跟著畫面縮小 */
+  max-width: 1200px; /* 景點區外框最大寬度 */
   min-height: 816px; /* 初始版面保留 Figma 三列卡片的高度 */
   height: auto; /* 自動載入更多景點時可向下延伸，不讓頁尾覆蓋卡片 */
   margin: 0 auto 40px; /* Figma 景點區下方保留 40px */
@@ -259,7 +261,7 @@ body {
 }
 
 .attraction-list {
-  width: 1170px; /* 景點寬度1170px */
+  width: 100%; /* 景點列表填滿外框的內容區 */
   min-height: 786px; /* 初始版面符合三列卡片與間距的總高度 */
   height: auto; /* 讓無限捲動追加的卡片正常撐開列表 */
   display: grid; /* 使用 Grid 建立景點卡片網格 */
@@ -381,6 +383,23 @@ body {
   opacity: 0.5;
 }
 
+/* 平板寬度：固定桌面尺寸改為可縮小的兩欄版面，避免產生橫向捲軸。 */
+@media (min-width: 601px) and (max-width: 1200px) {
+  .mrt-list {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .attraction-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .attraction-card {
+    width: 100%;
+  }
+}
+
 @media (max-width: 600px) {
   /* 手機版保留完整 360px 版面寬度，不讓桌面瀏覽器的捲軸吃掉內容空間。 */
   html {
@@ -398,10 +417,11 @@ body {
   }
 
   .nav-content {
-    width: 360px; /* 手機版導覽內容寬度 */
-    max-width: 100%; /* 不超出手機畫面 */
+    width: 100%; /* 導覽內容填滿手機畫面 */
+    max-width: none;
     height: 34px; /* 導覽內容高度 */
-    padding: 0 10px; /* 左右內距 */
+    margin: 0;
+    padding: 0; /* 標題貼齊左側、選單可貼齊右側 */
   }
 
   .site-title {
@@ -415,6 +435,7 @@ body {
   .nav-links {
     width: auto; /* 導覽按鈕區寬度 */
     height: 34px; /* 導覽按鈕區高度 */
+    margin-left: auto;
     flex-shrink: 0; /* 避免按鈕區被壓縮 */
     justify-content: space-between; /* 兩個按鈕分開排列 */
   }
@@ -427,6 +448,10 @@ body {
     line-height: 13.3px; /* 文字行高 */
     white-space: nowrap; /* 避免文字換行 */
     flex-shrink: 0; /* 避免文字被壓縮 */
+  }
+
+  .auth-link {
+    padding-right: 0; /* 最右側選單文字貼齊螢幕右側 */
   }
 
   .hero-section {
