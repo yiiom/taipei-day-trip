@@ -68,10 +68,13 @@ try:
             attraction["imgurls"],
         )
 
+        # 原始資料的「其　　他」含有全形空白，匯入前清除避免分類顯示被拆開。
+        category = attraction["CAT"].replace("　", "").strip()
+
         values = (
             attraction["_id"],
             attraction["name"],
-            attraction["CAT"],
+            category,
             attraction["description"],
             attraction["address"],
             attraction["direction"],
