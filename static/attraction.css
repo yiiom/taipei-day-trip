@@ -295,7 +295,7 @@
   color: #666666; 
   font-size: 16px; 
   font-weight: 400; 
-  line-height: normal; 
+  line-height: 100%; 
   box-sizing: border-box; 
 } 
 /* 設定景點地址標題 */
