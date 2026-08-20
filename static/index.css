@@ -38,7 +38,7 @@ body {
 .nav-links { /* 右側預訂行程和登入/註冊兩個連結的容器 */
     display: flex; /* 預訂行程和登入/註冊排列在同一水平列 */
     height: 34px; /* 右側導覽連結區的高度 */
-    width: 175px;
+    width: auto; /* 右側導覽連結區的寬度自動調整，避免文字被裁切 */
     align-items: center; /* 讓預訂行程和登入/註冊垂直置中 */
     justify-content: space-between;
 }
@@ -421,7 +421,7 @@ body {
     max-width: none;
     height: 34px; /* 導覽內容高度 */
     margin: 0;
-    padding: 0; /* 標題貼齊左側、選單可貼齊右側 */
+    padding: 0 10px; /* 左右各10px內距 */
   }
 
   .site-title {
@@ -433,7 +433,7 @@ body {
   }
 
   .nav-links {
-    width: 175px; /* 導覽按鈕區寬度，保留兩個文字完整顯示的空間 */
+    width: auto; 
     height: 34px; /* 導覽按鈕區高度 */
     margin-left: auto;
     flex-shrink: 0; /* 避免按鈕區被壓縮 */
@@ -442,7 +442,7 @@ body {
 
   .booking-link,
   .auth-link {
-    padding: 10px 0; /* 不額外吃掉左右空間，避免右側文字被裁切 */
+    padding: 10px; /* 不額外吃掉左右空間，避免右側文字被裁切 */
     font-size: 16px; /* 文字大小 */
     font-weight: 500; 
     line-height: 13.3px; /* 文字行高 */
@@ -451,7 +451,7 @@ body {
   }
 
   .auth-link {
-    padding-right: 0; /* 最右側選單文字貼齊螢幕右側 */
+    padding-right: 10px; /* 對應 Figma 右側10px內距 */
   }
 
   .hero-section {
