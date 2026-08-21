@@ -354,6 +354,12 @@ body {
   justify-content: center; /* 文字水平置中 */
 }
 
+@media (min-width: 1201px) {
+  .footer {
+    box-sizing: border-box;
+  }
+}
+
 .footer-text {
   width: 234px; /* 文字容器寬度 */
   height: 24px; /* 文字容器高度 */

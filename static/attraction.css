@@ -281,31 +281,28 @@
 .attraction-information { /* 景點介紹、地址與交通資訊的外層 */
   position: relative; 
   width: 100%; /* 資訊區域填滿主容器 */
-  height: 362px; 
+  height: auto; /* 讓資訊區域依照內容自然延伸 */
 } 
 
 /* 設定景點介紹文字 */
 #attraction-description { 
-  position: absolute; 
-  top: 10px; 
-  left: 10px; 
+  position: static; 
   width: 1180px; 
-  height: 96px; 
-  margin: 0; 
+  min-height: 96px; 
+  height: auto; 
+  margin: 0 0 0 10px; 
   color: #666666; 
   font-size: 16px; 
   font-weight: 400; 
-  line-height: 100%; 
+  line-height: 1.5; 
   box-sizing: border-box; 
 } 
 /* 設定景點地址標題 */
 .attraction-information h3:first-of-type { /* 景點地址標題 */
-  position: absolute; 
-  top: 126px; 
-  left: 10px; 
+  position: static; 
   width: 1180px;
   height: 32px; 
-  margin: 0; 
+  margin: 0 0 0 10px; 
   color: #666666; 
   font-size: 16px; 
   font-weight: 700; 
@@ -316,11 +313,9 @@
 
 /* 設定景點地址內容 */
 #attraction-address { 
-  position: absolute; 
-  top: 158px; 
-  left: 10px; 
+  position: static; 
   width: 1180px; 
-  margin: 0; 
+  margin: 0 0 0 10px; 
   color: #666666; 
   font-size: 16px; 
   font-weight: 400; 
@@ -328,12 +323,10 @@
 } 
 /* 設定交通方式標題 */
 .attraction-information h3:nth-of-type(2) { /* 交通方式標題 */
-  position: absolute; 
-  top: 202px; 
-  left: 10px; 
+  position: static; 
   width: 1180px; 
   height: 32px; 
-  margin: 0; 
+  margin: 20px 0 0 10px; 
   color: #666666; 
   font-size: 16px; 
   font-weight: 700; 
@@ -344,11 +337,9 @@
 
 /* 設定交通方式內容 */
 #attraction-transport { /* 交通方式文字 */
-  position: absolute;
-  top: 234px; 
-  left: 10px; 
+  position: static;
   width: 1180px; 
-  margin: 0; 
+  margin: 0 0 0 10px; 
   color: #666666; 
   font-size: 16px; 
   font-weight: 400; 
@@ -522,3 +513,40 @@
     margin: 0 10px 40px; /* 左右各10px，底部保留40px */
   } 
 } 
+
+/* 只調整桌面版景點詳細資訊的固定留白與定位 */
+@media (min-width: 1201px) {
+  .attraction-information {
+    height: auto;
+    min-height: 362px;
+  }
+
+  #attraction-description {
+    position: static;
+    width: 1180px;
+    height: auto;
+    min-height: 96px;
+    margin: 0 0 0 10px;
+    line-height: 1.5;
+  }
+
+  .attraction-information h3:first-of-type {
+    position: static;
+    margin: 20px 0 0 10px;
+  }
+
+  #attraction-address {
+    position: static;
+    margin: 0 0 0 10px;
+  }
+
+  .attraction-information h3:nth-of-type(2) {
+    position: static;
+    margin: 20px 0 0 10px;
+  }
+
+  #attraction-transport {
+    position: static;
+    margin: 0 0 0 10px;
+  }
+}
