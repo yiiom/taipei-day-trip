@@ -1,11 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
+<html lang="zh-Hant"> 
+<head> 
+  <meta charset="UTF-8"> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Attraction</title>
-</head>
-<body>
-  
-</body>
-</html>
+  <title>台北一日遊｜景點</title> 
+  <link rel="stylesheet" href="/static/index.css"> 
+  <link rel="stylesheet" href="/static/attraction.css"> <!-- 載入景點頁面 -->
+</head> 
+<body> 
+  <header class="nav-bar"> <!-- 建立網站導覽列 -->
+    <div class="nav-content"> <!-- 建立導覽列內容容器 -->
+      <a class="site-title" href="/">台北一日遊</a> <!-- 點擊網站名稱回到首頁 -->
+      <nav class="nav-links"> <!-- 建立導覽連結區域 -->
+        <a class="booking-link" href="/booking">預訂行程</a> <!-- 建立預訂行程連結 -->
+        <a class="auth-link" href="#">登入/註冊</a> <!-- 建立登入註冊連結 -->
+      </nav> <!-- 結束導覽連結區域 -->
+    </div> <!-- 結束導覽列內容容器 -->
+  </header> 
+  <main class="attraction-page"> <!-- 建立景點頁面主要內容 -->
+    <section class="attraction-section"> <!-- 建立圖片和預約表單區域 -->
+      <div class="attraction-gallery"> <!-- 建立圖片輪播區域 -->
+        <img id="attraction-image" src="" alt="景點圖片"> <!-- 顯示目前景點圖片 -->
+        <button id="previous-image-button" type="button" aria-label="上一張圖片"> <!-- 建立上一張圖片按鈕 -->
+          <img src="/static/images/arrow-left.png" alt="上一張圖片"> <!-- 顯示左箭頭圖片 -->
+        </button> <!-- 結束上一張圖片按鈕 -->
+        <button id="next-image-button" type="button" aria-label="下一張圖片"> <!-- 建立下一張圖片按鈕 -->
+          <img src="/static/images/arrow-right.png" alt="下一張圖片"> <!-- 顯示右箭頭圖片 -->
+        </button> <!-- 結束下一張圖片按鈕 -->
+        <div id="image-indicators" class="image-indicators"> <!-- 建立圖片指示器容器 -->
+        </div> 
+      </div> 
+      <div class="attraction-profile"> <!-- 建立景點文字和預約區域 -->
+        <h1 id="attraction-name">景點名稱</h1> <!-- 顯示景點名稱 -->
+        <p id="attraction-category">景點分類</p> <!-- 顯示景點分類與捷運站 -->
+        <form class="booking-form"> <!-- 建立預約表單 -->
+          <h2>訂購導覽行程</h2> <!-- 顯示預約表單標題 -->
+          <p>以此景點為中心的一日行程，帶您探索城市角落故事</p> <!-- 顯示預約說明 -->
+          <div class="booking-field"> <!-- 建立日期欄位 -->
+            <label for="booking-date">選擇日期：</label> <!-- 建立日期欄位標籤 -->
+            <input id="booking-date" type="date"> <!-- 建立原生日期選擇器 -->
+          </div> 
+          <div class="booking-field"> <!-- 建立時間欄位 -->
+            <span>選擇時間：</span> <!-- 顯示時間欄位標籤 -->
+            <label for="morning-time"> <!-- 建立上午選項標籤 -->
+              <input id="morning-time" name="booking-time" type="radio" value="morning"> <!-- 建立上午單選按鈕 -->
+              上半天 <!-- 顯示上午選項文字 -->
+            </label> <!-- 結束上午選項標籤 -->
+            <label for="afternoon-time"> <!-- 建立下午選項標籤 -->
+              <input id="afternoon-time" name="booking-time" type="radio" value="afternoon"> <!-- 建立下午單選按鈕 -->
+              下半天 <!-- 顯示下午選項文字 -->
+            </label> <!-- 結束下午選項標籤 -->
+          </div> 
+          <div class="booking-field"> <!-- 建立價格欄位 -->
+            <span>導覽費用：</span> <!-- 顯示價格欄位標籤 -->
+            <span id="booking-price">新台幣 2000 元</span> <!-- 顯示目前行程價格 -->
+          </div> 
+          <button class="booking-button" type="submit">開始預約行程</button> <!-- 建立開始預約按鈕 -->
+        </form> 
+      </div> 
+    </section> 
+    <hr class="main-separator"> <!-- 建立主要內容分隔線 -->
+    <section class="attraction-information"> <!-- 建立景點詳細資訊區域 -->
+      <p id="attraction-description">景點介紹</p> <!-- 顯示景點介紹 -->
+      <h3>景點地址：</h3> <!-- 顯示地址標題 -->
+      <p id="attraction-address">景點地址</p> <!-- 顯示景點地址 -->
+      <h3>交通方式：</h3> <!-- 顯示交通標題 -->
+      <p id="attraction-transport">交通方式</p> <!-- 顯示交通方式 -->
+    </section> 
+  </main> 
+  <footer class="footer"> <!-- 建立網站頁尾 -->
+    <p class="footer-text">COPYRIGHT © 2021 台北一日遊</p> <!-- 顯示版權文字 -->
+  </footer> <!-- 結束網站頁尾 -->
+  <script src="/static/attraction.js"></script> <!-- 載入景點頁面的 JavaScript -->
+</body> 
+</html> 

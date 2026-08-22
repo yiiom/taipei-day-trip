@@ -1,0 +1,552 @@
+/* 景點頁面 */
+.attraction-page { /* 景點頁面主要內容 */
+  width: 100%; /* 讓內容寬度可以隨螢幕縮放 */
+  max-width: 1200px; 
+  margin: 0 auto; /* 讓內容在畫面中央水平排列 */
+  padding-top: 40px; /* 對應導覽列下方到主要內容的 40px 間距 */
+  box-sizing: border-box; /* 讓 padding 包含在元素寬度裡 */
+} 
+/* 設定圖片區域與右側資訊區域的排列方式 */
+.attraction-section { /* 圖片和預約表單的外層區域 */
+  display: flex; /* 圖片區域和資訊區域水平排列 */
+  gap: 30px; 
+  width: 100%;
+  height: 400px; /* 圖片區域的高度 */
+  min-height: 400px; /* 覆蓋 index.css 的 816px，符合景點頁面高度 */
+  padding: 0 15px; /* 左右兩側的內距 */
+  box-sizing: border-box; /* 讓內距包含在整體寬度裡 */
+} 
+
+/* 設定左側圖片容器 */
+.attraction-gallery { /* 景點圖片輪播容器 */
+  position: relative; /* 讓箭頭可以定位在圖片上方 */
+  width: 540px; /* 桌面版圖片寬度 */
+  height: 400px; /* 桌面版圖片高度 */
+  overflow: hidden; /* 隱藏超出圖片容器的內容 */
+  border-radius: 5px; /* 圖片的圓角 */
+  background-color: #e8e8e8; /* 圖片尚未載入時顯示灰色背景 */
+} 
+
+/* 設定景點主圖片 */
+#attraction-image { /* 選取景點主圖片 */
+  display: block; /* 移除圖片下方預設空白 */
+  width: 100%; /* 讓圖片填滿容器寬度 */
+  height: 100%; /* 讓圖片填滿容器高度 */
+  object-fit: cover; /* 維持圖片比例並裁切多餘部分 */
+} 
+
+#previous-image-button, /* 選取上一張圖片按鈕 */
+#next-image-button { /* 選取下一張圖片按鈕 */
+  position: absolute; /* 將箭頭放在圖片上方 */
+  top: 50%; /* 將箭頭垂直定位在圖片中央 */
+  z-index: 2; /* 讓箭頭顯示在圖片上方 */
+  width: 36px; /* 對應 Figma 箭頭按鈕寬度 */
+  height: 36px; /* 對應 Figma 箭頭按鈕高度 */
+  padding: 0; /* 移除按鈕預設內距 */
+  border: 0; /* 移除按鈕預設邊框 */
+  background: transparent; /* 讓按鈕背景透明 */
+  opacity: 0.75; /* 對應 Figma 箭頭透明度75% */
+  transform: translateY(-50%); /* 修正垂直置中位置 */
+  cursor: pointer; /* 顯示可點擊游標 */
+}
+
+#previous-image-button { /* 設定上一張按鈕位置 */
+  left: 10px; /* 距離圖片左側10px */
+}
+
+#next-image-button { /* 設定下一張按鈕位置 */
+  right: 10px; /* 距離圖片右側10px */
+}
+
+#previous-image-button img, /* 設定上一張箭頭圖片 */
+#next-image-button img { /* 設定下一張箭頭圖片 */
+  display: block; /* 移除箭頭圖片下方空隙 */
+  width: 36px; /* 對應 Figma 箭頭圖片寬度 */
+  height: 36px; /* 對應 Figma 箭頭圖片高度 */
+}
+
+.image-indicators { /* 設定 Figma 圖片指示條外層 */
+  position: absolute; /* 將指示條固定在圖片底部 */
+  bottom: 0; /* 對應 Figma 指示條位於圖片底部 */
+  left: 0; /* 從圖片左側開始排列 */
+  display: flex; /* 讓三個指示條水平排列 */
+  width: 100%; /* 讓指示條填滿不同尺寸的圖片容器 */
+  height: 5px; /* 對應 Figma 指示條外層高度 */
+  gap: 0; /* 三個指示條之間不增加間距 */
+  opacity: 0.75; /* 對應 Figma 指示條透明度 */
+  z-index: 2; /* 讓指示條顯示在圖片上方 */
+}
+
+.image-indicator { /* 設定單一圖片指示條 */
+  flex: 1; /* 讓所有指示條平均分配外層寬度 */
+  height: 5px; /* 對應 Figma 每個指示條高度5px */
+  background-color: #ffffff; /* 設定未啟用指示條為白色 */
+}
+
+.image-indicator.active { /* 設定目前圖片指示條 */
+  background-color: #000000; /* 設定啟用指示條為黑色 */
+}
+/* 設定右側景點資訊區域 */
+.attraction-profile { /* 選取右側景點資訊容器 */
+  width: 600px; /* 桌面版右側區域寬度 */
+  height: 400px; /* 桌面版右側區域高度 */
+  overflow: hidden; /* 避免內容超出右側區域 */
+  color: #666666; 
+} 
+
+/* 設定景點名稱 */
+#attraction-name { /* 選取景點名稱標題 */
+  margin: 0; /* 移除標題預設外距 */
+  font-size: 24px; 
+  font-weight: 700; 
+  line-height: 24px; 
+} 
+
+/* 設定景點分類文字 */
+#attraction-category { /* 景點分類文字 */
+  margin: 15px 0 0; /* 讓分類文字和標題保持適當距離 */
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: 22px; 
+} 
+/* 設定右側預約表單的外觀 */
+.booking-form { /* 預約表單 */
+  width: 600px; /* 預約表單寬度 */
+  height: 302px; /* 預約表單高度 */
+  margin: 29px 0 0; /* 讓表單位於景點分類文字下方 */
+  padding: 15px 20px 0; /* 上方15px、左右20px、下方0px */  
+  box-sizing: border-box; /* 讓 padding 包含在表單總寬高裡 */
+  background-color: #e8e8e8; 
+  border-radius: 5px; 
+} 
+/* 設定預約表單標題 */
+.booking-form h2 { /* 預約表單標題 */
+  height: 22px;
+  margin: 0; /* 移除瀏覽器預設外距 */
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 700; 
+  line-height: 13.3px; 
+  display: flex; /* 讓文字可以垂直對齊 */
+  align-items: center; /* 讓文字垂直置中 */
+} 
+
+/* 設定預約表單說明文字 */
+.booking-form > p { /* 預約表單說明文字 */
+  height: 48px; 
+  margin: 15px 0 0; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: 16px; 
+  display: flex; 
+  align-items: center; 
+} 
+/* 設定日期欄位外層 */
+.booking-form .booking-field:first-of-type { /* 預約表單中的日期欄位 */
+  display: flex; /* 讓日期標籤和輸入框水平排列 */
+  align-items: center; /* 讓內容垂直置中 */
+  width: 560px; 
+  height: 35px; 
+  margin-top: 15px; 
+} 
+
+/* 設定日期欄位標籤 */
+.booking-form .booking-field:first-of-type label { /* 選取日期欄位的文字標籤 */
+  width: 81px; 
+  height: 17px; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 700; 
+  line-height: 13.3px; 
+} 
+
+/* 設定日期輸入框 */
+#booking-date { /* 選取日期輸入框 */
+  width: 193px; 
+  height: 35px; 
+  margin-left: 5px; /* 讓輸入框左側位置從 81px 移到 86px */
+  padding: 5px 10px; /* 輸入框內文字位置 */
+  box-sizing: border-box; /* 讓 padding 包含在輸入框尺寸裡 */
+  border: none; /* 移除瀏覽器預設邊框 */
+  background-color: #ffffff; 
+  color: #000000; 
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: 13.3px; 
+} 
+/* 設定選擇時間外層 */
+.booking-form .booking-field:nth-of-type(2) { /* 選取預約表單中的第二個欄位 時間欄位 */
+  display: flex; /* 讓標籤和時間選項水平排列 */
+  align-items: center; /* 讓內容垂直置中 */
+  width: 560px; 
+  height: 22px; 
+  margin-top: 15px; 
+} 
+
+/* 設定選擇時間文字 */
+.booking-form .booking-field:nth-of-type(2) > span { /* 時間欄位的標籤文字 */
+  width: 81px; 
+  height: 22px; 
+  color: #666666; 
+  font-size: 16px;
+  font-weight: 700; 
+  line-height: 13.3px; 
+  display: flex; 
+  align-items: center; 
+} 
+
+/* 設定上午與下午選項 */
+.booking-form .booking-field:nth-of-type(2) label { /* 選取上午和下午選項 */
+  display: flex; /* 讓單選按鈕和文字水平排列 */
+  align-items: center; /* 讓單選按鈕和文字垂直置中 */
+  width: 87px;
+  height: 22px; 
+  margin-left: 5px; 
+  padding-left: 5px; 
+  box-sizing: border-box; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: 13.3px; 
+} 
+/* 設定單選按鈕 */
+.booking-form .booking-field:nth-of-type(2) input[type="radio"] { /* 選取上午與下午的單選按鈕 */
+  width: 22px; 
+  height: 22px; 
+  margin: 0 4px 0 0; 
+  accent-color: #448899; 
+} 
+/* 設定價格欄位外層 */
+.booking-form .booking-field:nth-of-type(3) { /* 預約表單中的第三個欄位 價格欄位 */
+  display: flex; /* 價格標籤和價格文字水平排列 */
+  align-items: center; 
+  width: 560px; 
+  height: 22px; 
+  margin-top: 15px; 
+} 
+
+/* 設定導覽費用標籤 */
+.booking-form .booking-field:nth-of-type(3) > span:first-child { /* 選取導覽費用標籤 */
+  width: 81px;
+  height: 22px; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 700; 
+  line-height: 13.3px; 
+  display: flex; 
+  align-items: center; 
+} 
+
+/* 設定導覽費用文字 */
+#booking-price { /* 目前的價格文字 */
+  width: 108px; 
+  height: 14px; 
+  margin-left: 5px; /* 價格文字從欄位左側 86px 開始 */
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: 13.3px; 
+  display: flex; 
+  align-items: center; 
+}
+/* 設定開始預約行程按鈕 */
+.booking-button { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  width: 154px; 
+  height: 36px; 
+  margin-top: 25px; 
+  padding: 10px 20px; /* 上下10px、左右20px */
+  box-sizing: border-box; /* 讓 padding 包含在按鈕尺寸裡 */
+  border: none; /* 移除瀏覽器預設邊框 */
+  border-radius: 5px; 
+  background-color: #448899;
+  color: #ffffff; 
+  font-size: 19px; 
+  font-weight: 400; 
+  line-height: 16px; 
+}
+/* 設定景點主要內容分隔線 */
+.main-separator { 
+  width: 100%; /* 分隔線填滿 1200px 主容器 */
+  height: 0; 
+  margin: 40px 0 ; 
+  border: 0; /* 移除瀏覽器預設的 hr 邊框 */
+  border-top: 1px solid #e8e8e8; /* 淺灰色分隔線 */
+  box-sizing: border-box; /* 讓尺寸保持一致 */
+} 
+/* 設定景點詳細資訊區域 */
+.attraction-information { /* 景點介紹、地址與交通資訊的外層 */
+  position: relative; 
+  width: 100%; /* 資訊區域填滿主容器 */
+  height: auto; /* 讓資訊區域依照內容自然延伸 */
+} 
+
+/* 設定景點介紹文字 */
+#attraction-description { 
+  position: static; 
+  width: 1180px; 
+  min-height: 96px; 
+  height: auto; 
+  margin: 0 0 0 10px; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: 1.5; 
+  box-sizing: border-box; 
+} 
+/* 設定景點地址標題 */
+.attraction-information h3:first-of-type { /* 景點地址標題 */
+  position: static; 
+  width: 1180px;
+  height: 32px; 
+  margin: 0 0 0 10px; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 700; 
+  line-height: 13.3px;
+  display: flex; 
+  align-items: center; 
+} 
+
+/* 設定景點地址內容 */
+#attraction-address { 
+  position: static; 
+  width: 1180px; 
+  margin: 0 0 0 10px; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: normal; 
+} 
+/* 設定交通方式標題 */
+.attraction-information h3:nth-of-type(2) { /* 交通方式標題 */
+  position: static; 
+  width: 1180px; 
+  height: 32px; 
+  margin: 20px 0 0 10px; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 700; 
+  line-height: 13.3px; 
+  display: flex; 
+  align-items: center; 
+} 
+
+/* 設定交通方式內容 */
+#attraction-transport { /* 交通方式文字 */
+  position: static;
+  width: 1180px; 
+  margin: 0 0 0 10px; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: normal; 
+} 
+
+/* 設定景點頁面的平板版畫面 */
+@media (min-width: 601px) and (max-width: 1200px) { 
+  .attraction-section { /* 平板版圖片與資訊的外層區域 */
+    width: 100%; /* 讓外層區域隨瀏覽器寬度縮放 */
+    height: 400px; /* 保留桌面版主要區域高度 */
+    min-height: 400px; /* 避免被其他樣式壓縮高度 */
+    gap: 30px; /* 保留圖片與資訊區域的間距 */
+    padding: 0 15px; /* 保留外層左右留白 */
+  } 
+
+  .attraction-gallery { /* 平板版圖片輪播區域 */
+    flex: 1 1 0; /* 讓圖片區域和右側資訊平均分配可用寬度 */
+    width: auto; /* 覆蓋桌面版固定的540px寬度 */
+    min-width: 0; /* 允許圖片區域在較窄平板中縮小 */
+  } 
+
+  .attraction-profile { /* 平板版景點資訊區域 */
+    flex: 1 1 0; /* 讓資訊區域和圖片區域平均分配可用寬度 */
+    width: auto; /* 覆蓋桌面版固定的600px寬度 */
+    min-width: 0; /* 允許資訊區域在較窄平板中縮小 */
+  } 
+
+  .booking-form { /* 平板版預約表單 */
+    width: 100%; /* 讓表單填滿右側資訊區域 */
+    box-sizing: border-box; /* 讓內距包含在表單總寬度內 */
+  } 
+
+  .booking-form > p { /* 平板版預約表單說明文字 */
+    width: 100%; /* 讓說明文字跟著表單寬度縮放 */
+    max-width: 100%; /* 防止文字區域超出表單 */
+    box-sizing: border-box; /* 讓文字區域的寬度包含在表單內 */
+    overflow-wrap: break-word; /* 讓過長文字可以在區域內換行 */
+  } 
+
+  .attraction-information { /* 平板版景點詳細資訊區域 */
+    width: calc(100% - 30px); /* 保留外層左右各15px的空間 */
+    height: auto; /* 讓高度依照內容自然延伸 */
+    margin: 0 15px 40px; /* 設定平板版左右與下方間距 */
+  } 
+
+  #attraction-description { /* 平板版景點介紹文字 */
+    position: static; /* 讓景點介紹參與正常文件排列 */
+    width: 100%; /* 讓文字填滿平板資訊區域 */
+    height: auto; /* 讓文字換行時自然增加高度 */
+    margin: 10px 0; /* 保留文字上下間距 */
+    line-height: 1.5; /* 提高多行文字的可讀性 */
+    overflow-wrap: break-word; /* 避免過長文字超出區域 */
+  } 
+
+  .attraction-information h3:first-of-type { /* 平板版景點地址標題 */
+    position: static; /* 讓地址標題接在景點介紹後面 */
+    width: 100%; /* 讓標題填滿平板資訊區域 */
+    height: 32px; /* 保留標題的垂直空間 */
+    margin: 20px 0 0; /* 在介紹與地址標題間保留間距 */
+  } 
+
+  #attraction-address { /* 平板版景點地址內容 */
+    position: static; /* 讓地址內容接在地址標題後面 */
+    width: 100%; /* 讓地址內容填滿平板資訊區域 */
+    min-height: 24px; /* 保留地址內容的基本高度 */
+    height: auto; /* 允許較長地址自然換行 */
+    margin: 0; /* 移除固定定位留下的外距 */
+  } 
+
+  .attraction-information h3:nth-of-type(2) { /* 平板版交通方式標題 */
+    position: static; /* 讓交通標題接在地址內容後面 */
+    width: 100%; /* 讓標題填滿平板資訊區域 */
+    height: 32px; /* 保留標題的垂直空間 */
+    margin: 20px 0 0; /* 在地址與交通標題間保留間距 */
+  } 
+
+  #attraction-transport { /* 平板版交通方式內容 */
+    position: static; /* 讓交通內容接在交通標題後面 */
+    width: 100%; /* 讓交通內容填滿平板資訊區域 */
+    min-height: 24px; /* 保留交通內容的基本高度 */
+    height: auto; /* 允許較長交通資訊自然換行 */
+    margin: 0; /* 移除固定定位留下的外距 */
+  } 
+} 
+
+/* 設定手機版畫面 */
+@media (max-width: 600px) { /* 當螢幕寬度小於或等於600px時套用手機樣式 */
+  .attraction-page { /* 選取手機版景點頁面 */
+    max-width: 360px; 
+    padding-top: 0; 
+  }
+
+  .attraction-section { /* 選取手機版圖片和預約區域 */
+    display: flex; /* 保留彈性排列 */
+    flex-direction: column; /* 將圖片和預約區域改成上下排列 */
+    gap: 20px; 
+    width: 360px; 
+    height: auto; 
+    min-height: 0; 
+    padding: 0; 
+  } 
+
+  .attraction-gallery { /* 選取手機版圖片容器 */
+    width: 360px; 
+    height: 350px; 
+    border-radius: 0; 
+  } 
+  .attraction-profile { /* 選取手機版景點資訊區域 */
+    width: 340px; 
+    height: 390px; 
+    margin: 0 10px; /* 左右各10px間距 */
+  } 
+
+  .booking-form { /* 選取手機版預約表單 */
+    width: 340px; /* 手機版預約表單寬度 */
+  } 
+  .booking-form .booking-field:first-of-type { /* 選取手機版日期欄位 */
+    width: 300px; 
+    height: 35px; 
+  } 
+  .attraction-information { /* 選取手機版景點資訊區域 */
+    width: 340px; 
+    height: auto; /* 讓資訊區域依照文字長度自動延伸 */
+    margin: 0 10px; /* 左右各10px間距 */
+  } 
+  .main-separator { /* 選取手機版主要分隔線 */
+    width: 340px; 
+    height: 0; 
+    margin: 40px 10px; /* 上下各40px、左右各10px */
+  } 
+  #attraction-description { /* 手機版景點介紹文字 */
+    position: static; /* 讓景點介紹參與正常文件流 */
+    width: 330px; 
+    height: auto; /* 讓高度依照文字行數自動延伸 */
+    margin: 10px; /* 保留資訊區域四周的內距效果 */
+    color: #666666; 
+    font-size: 16px; 
+    font-weight: 400; 
+    line-height: 1.5; 
+  } 
+  .attraction-information h3:first-of-type { /* 手機版景點地址標題 */
+    position: static; /* 讓地址標題接在景點介紹後面 */
+    width: 330px; 
+    height: 32px; 
+    margin: 20px 10px 0; /* 在介紹與地址標題之間保留間距 */
+  } 
+
+  #attraction-address { /* 手機版景點地址內容 */
+    position: static; /* 讓地址內容接在地址標題後面 */
+    width: 330px; 
+    min-height: 24px; /* 保留地址文字的最小高度 */
+    height: auto; /* 允許較長地址自然換行 */
+    margin: 0 10px; /* 對齊資訊區域左右內距 */
+  } 
+  .attraction-information h3:nth-of-type(2) { /* 手機版交通方式標題 */
+    position: static; /* 讓交通標題接在地址內容後面 */
+    width: 330px; 
+    height: 32px; 
+    margin: 20px 10px 0; /* 在地址與交通標題之間保留間距 */
+  } 
+
+  #attraction-transport { /* 手機版交通方式內容 */
+    position: static; /* 讓交通內容接在交通標題後面 */
+    width: 330px; 
+    min-height: 144px; 
+    height: auto; 
+    margin: 0 10px; /* 對齊資訊區域左右內距 */
+  } 
+  .attraction-information { /* 手機版景點資訊區域 */
+    margin: 0 10px 40px; /* 左右各10px，底部保留40px */
+  } 
+} 
+
+/* 只調整桌面版景點詳細資訊的固定留白與定位 */
+@media (min-width: 1201px) {
+  .attraction-information {
+    height: auto;
+    min-height: 362px;
+  }
+
+  #attraction-description {
+    position: static;
+    width: 1180px;
+    height: auto;
+    min-height: 96px;
+    margin: 0 0 0 10px;
+    line-height: 1.5;
+  }
+
+  .attraction-information h3:first-of-type {
+    position: static;
+    margin: 20px 0 0 10px;
+  }
+
+  #attraction-address {
+    position: static;
+    margin: 0 0 0 10px;
+  }
+
+  .attraction-information h3:nth-of-type(2) {
+    position: static;
+    margin: 20px 0 0 10px;
+  }
+
+  #attraction-transport {
+    position: static;
+    margin: 0 0 0 10px;
+  }
+}
