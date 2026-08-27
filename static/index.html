@@ -58,7 +58,48 @@
   <footer class="footer">
     <p class="footer-text">COPYRIGHT © 2021 台北一日遊</p>
   </footer>
-<script src="/static/index.js"></script>
+<div id="auth-modal" class="auth-modal hidden"> <!-- 建立登入註冊彈窗外層 -->
+  <div class="auth-backdrop"></div> <!-- 建立黑色半透明背景遮罩 -->
+
+  <div class="auth-dialog"> <!-- 建立 Figma 登入彈窗容器 -->
+    <div class="auth-decorator-bar"></div> <!-- 建立上方漸層裝飾條 -->
+
+    <button id="auth-close-button" class="auth-close-button" type="button"> <!-- 建立右上角關閉按鈕 -->
+      <img src="/static/images/close.png" alt="關閉"> <!-- 使用下載到專案的關閉圖片 -->
+    </button> <!-- 結束關閉按鈕 -->
+
+    <div class="auth-main"> <!-- 建立彈窗主要內容區 -->
+      <div id="signin-view"> <!-- 建立登入畫面 -->
+        <h2 class="auth-title">登入會員帳號</h2> <!-- 顯示登入標題 -->
+
+        <form id="signin-form" class="auth-form"> <!-- 建立登入表單 -->
+          <input id="signin-email" type="email" placeholder="輸入電子信箱" required> <!-- 建立 Email 輸入框 -->
+          <input id="signin-password" type="password" placeholder="輸入密碼" required> <!-- 建立密碼輸入框 -->
+          <button type="submit">登入帳戶</button> <!-- 建立登入按鈕 -->
+          <p id="signin-message"></p> <!-- 預留登入錯誤訊息位置 -->
+        </form> <!-- 結束登入表單 -->
+
+        <p class="auth-switch">還沒有帳戶？<button id="show-signup-button" type="button">點此註冊</button></p> <!-- 建立切換註冊按鈕 -->
+      </div> <!-- 結束登入畫面 -->
+
+      <div id="signup-view" class="hidden"> <!-- 建立註冊畫面，預設隱藏 -->
+        <h2 class="auth-title">註冊會員帳號</h2> <!-- 顯示註冊標題 -->
+
+        <form id="signup-form" class="auth-form"> <!-- 建立註冊表單 -->
+          <input id="signup-name" type="text" placeholder="輸入姓名" required> <!-- 建立姓名輸入框 -->
+          <input id="signup-email" type="email" placeholder="輸入電子信箱" required> <!-- 建立 Email 輸入框 -->
+          <input id="signup-password" type="password" placeholder="輸入密碼" required> <!-- 建立密碼輸入框 -->
+          <button type="submit">註冊新帳戶</button> <!-- 建立註冊按鈕 -->
+          <p id="signup-message"></p> <!-- 預留註冊錯誤訊息位置 -->
+        </form> <!-- 結束註冊表單 -->
+
+        <p class="auth-switch">已經有帳戶了？<button id="show-signin-button" type="button">點此登入</button></p> <!-- 建立切換登入按鈕 -->
+      </div> <!-- 結束註冊畫面 -->
+    </div> <!-- 結束彈窗主要內容區 -->
+  </div> <!-- 結束彈窗容器 -->
+</div> <!-- 結束彈窗外層 -->
+  <script src="/static/index.js"></script>
+
 </body>
 
 </html>

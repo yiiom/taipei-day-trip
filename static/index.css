@@ -543,3 +543,138 @@ body {
     height: 104px;
   }
 }
+.auth-modal { /* 設定登入註冊彈窗外層 */
+  position: fixed; /* 固定在瀏覽器畫面上 */
+  inset: 0; /* 填滿整個畫面 */
+  z-index: 100; /* 顯示在網站內容上方 */
+}
+
+.auth-modal.hidden { /* 設定彈窗隱藏狀態 */
+  display: none; /* 隱藏彈窗 */
+}
+
+.auth-backdrop { /* 背景遮罩 */
+  position: absolute; /* 定位在彈窗外層 */
+  inset: 0; /* 填滿整個畫面 */
+  background: rgba(0, 0, 0, 0.25); /* 使用黑色 25% 透明度 */
+}
+
+.auth-dialog { /* 設定登入彈窗 */
+  position: absolute; /* 讓彈窗可以定位 */
+  top: 80px; /* 上方 80px */
+  left: 50%; /* 將彈窗放在畫面中央 */
+  width: 340px; 
+  height: 275px; 
+  transform: translateX(-50%); /* 修正水平置中位置 */
+  overflow: hidden; /* 隱藏超出彈窗的內容 */
+  border-radius: 5px; 
+  background: #ffffff; 
+  box-shadow: 0 4px 60px #aaaaaa; /* 陰影 */
+}
+
+.auth-dialog.signup-mode { /* 設定註冊彈窗 */
+  height: 332px; /* 註冊彈窗高度 */
+}
+
+.auth-decorator-bar { /* 設定彈窗上方裝飾條 */
+  width: 340px; 
+  height: 10px; 
+  background: linear-gradient(90deg, #66aabb 0%, #337788 100%); /* 將 Figma 0 度漸層轉換成水平 CSS 漸層 */
+}
+
+.auth-main { /* 設定彈窗主要內容區 */
+  position: absolute; /* 依照 Figma 位置定位 */
+  top: 25px; /* 上方 25px */
+  left: 15px; /*  左側 15px */
+  width: 310px; /*  內容寬度 */
+}
+
+.auth-title { /* 設定登入註冊標題 */
+  height: 27px; /* 標題高度 */
+  margin: 0 0 15px; /* 標題下方間距 */
+  color: #666666; 
+  font-size: 24px; 
+  font-weight: 700; 
+  line-height: 24px; 
+  text-align: center; /* 文字水平置中 */
+}
+
+.auth-form { /* 設定表單排列方式 */
+  display: flex; /* 使用 Flex 排版 */
+  flex-direction: column; /* 讓表單內容垂直排列 */
+  gap: 10px; /* 間距 */
+}
+
+.auth-form input { /* 設定輸入欄位 */
+  width: 310px; 
+  height: 47px; 
+  padding: 15px; /* 內距 */
+  border: 1px solid #cccccc; 
+  border-radius: 5px; 
+  color: #757575; 
+  font-family: "Noto Sans TC", sans-serif; 
+  font-size: 16px; 
+  font-weight: 500; 
+}
+
+.auth-form button[type="submit"] { /* 設定登入註冊按鈕 */
+  width: 310px; 
+  height: 46px; /* 按鈕高度 */
+  padding: 10px 20px; /* 上下 10px、左右 20px 內距 */
+  border: 0; /* 移除預設邊框 */
+  border-radius: 5px; 
+  background: #448899; 
+  color: #ffffff; 
+  font-family: "Noto Sans TC", sans-serif; 
+  font-size: 19px; 
+  font-weight: 400; 
+  cursor: pointer; /* 顯示可點擊游標 */
+}
+
+.auth-form p:empty { /* 設定沒有錯誤訊息時的提示區 */
+  display: none; /* 隱藏空白提示區 */
+}
+
+.auth-form p:not(:empty) { /* 設定有錯誤訊息時的提示區 */
+  margin: 0; /* 移除預設外距 */
+  text-align: center; /* 文字水平置中 */
+}
+
+.auth-switch { /* 設定登入註冊切換文字 */
+  height: 22px; 
+  margin-top: 16px; /* 按鈕與文字之間的 16px 間距 */
+  color: #666666; 
+  font-family: "Noto Sans TC", sans-serif; 
+  font-size: 16px; 
+  font-weight: 500; 
+  line-height: 13.3px; 
+  text-align: center; 
+}
+
+.auth-switch button { /* 設定切換按鈕 */
+  padding: 0; /* 移除按鈕內距 */
+  border: 0; /* 移除按鈕邊框 */
+  background: transparent; /* 設定按鈕背景透明 */
+  color: inherit; /* 沿用 Figma 文字顏色 */
+  font: inherit; /* 沿用父層字體設定 */
+  cursor: pointer; /* 顯示可點擊游標 */
+}
+
+.auth-close-button { /* 設定右上角關閉按鈕 */
+  position: absolute; 
+  z-index: 2; /* 讓叉叉按鈕顯示在內容上方，可以被點擊 */
+  top: 20px; 
+  right: 10px; 
+  width: 30px; 
+  height: 30px; 
+  padding: 7px; 
+  border: 0; /* 移除預設邊框 */
+  background: transparent; /* 設定背景透明 */
+  cursor: pointer; /* 顯示可點擊游標 */
+}
+
+.auth-close-button img { /* 設定關閉圖示 */
+  display: block; /* 移除圖片下方空白 */
+  width: 16px; 
+  height: 16px; 
+}
