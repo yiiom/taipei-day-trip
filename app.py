@@ -1,3 +1,4 @@
+import os  # 匯入讀取環境變數的工具
 import json
 from fastapi import FastAPI,Request,Header
 from fastapi.responses import FileResponse, JSONResponse
@@ -7,7 +8,7 @@ from pydantic import BaseModel  # 匯入 BaseModel，用來定義前端傳來的
 import jwt  # 匯入 PyJWT，用來產生和解碼 JWT Token
 from datetime import datetime, timedelta, timezone  # 匯入時間工具，用來設定 Token 有效期限
 app=FastAPI()
-JWT_SECRET = "taipei-day-trip-secret"  # 設定 JWT 加密用的密鑰
+JWT_SECRET = os.getenv("JWT_SECRET")  # 從環境變數讀取 JWT 密鑰
 JWT_ALGORITHM = "HS256"  # 設定 JWT 使用的加密演算法
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
