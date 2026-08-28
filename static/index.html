@@ -76,10 +76,10 @@
           <input id="signin-email" type="email" placeholder="輸入電子信箱" required> <!-- 建立 Email 輸入框 -->
           <input id="signin-password" type="password" placeholder="輸入密碼" required> <!-- 建立密碼輸入框 -->
           <button type="submit">登入帳戶</button> <!-- 建立登入按鈕 -->
-          <p id="signin-message"></p> <!-- 預留登入錯誤訊息位置 -->
         </form> <!-- 結束登入表單 -->
 
         <p class="auth-switch">還沒有帳戶？<button id="show-signup-button" type="button">點此註冊</button></p> <!-- 建立切換註冊按鈕 -->
+        <p id="signin-message" class="auth-message"></p> <!-- 在切換文字下方顯示登入錯誤訊息 -->
       </div> <!-- 結束登入畫面 -->
 
       <div id="signup-view" class="hidden"> <!-- 建立註冊畫面，預設隱藏 -->
@@ -90,15 +90,16 @@
           <input id="signup-email" type="email" placeholder="輸入電子信箱" required> <!-- 建立 Email 輸入框 -->
           <input id="signup-password" type="password" placeholder="輸入密碼" required> <!-- 建立密碼輸入框 -->
           <button type="submit">註冊新帳戶</button> <!-- 建立註冊按鈕 -->
-          <p id="signup-message"></p> <!-- 預留註冊錯誤訊息位置 -->
         </form> <!-- 結束註冊表單 -->
 
         <p class="auth-switch">已經有帳戶了？<button id="show-signin-button" type="button">點此登入</button></p> <!-- 建立切換登入按鈕 -->
+        <p id="signup-message" class="auth-message"></p> <!-- 在切換文字下方顯示註冊錯誤訊息 -->
       </div> <!-- 結束註冊畫面 -->
     </div> <!-- 結束彈窗主要內容區 -->
   </div> <!-- 結束彈窗容器 -->
 </div> <!-- 結束彈窗外層 -->
-  <script src="/static/index.js"></script>
+  <script src="/static/auth.js"></script> <!-- 載入共用會員功能 -->
+  <script src="/static/index.js"></script> <!-- 載入首頁景點功能 -->
 
 </body>
 

@@ -631,13 +631,24 @@ body {
   cursor: pointer; /* 顯示可點擊游標 */
 }
 
-.auth-form p:empty { /* 設定沒有錯誤訊息時的提示區 */
+.auth-message:empty { /* 設定沒有錯誤訊息時的提示區 */
   display: none; /* 隱藏空白提示區 */
 }
 
-.auth-form p:not(:empty) { /* 設定有錯誤訊息時的提示區 */
-  margin: 0; /* 移除預設外距 */
-  text-align: center; /* 文字水平置中 */
+.auth-message:not(:empty) { /* 設定有錯誤訊息時的提示區 */
+  display: block; /* 顯示錯誤訊息 */
+  width: 310px; /* 與輸入框和按鈕同寬 */
+  margin: 10px 0 0; /* 與切換文字保留間距 */
+  color: #e74c3c; /* 使用紅色提示錯誤 */
+  text-align: center; /* 讓錯誤訊息置中 */
+}
+
+.auth-dialog:has(#signin-message:not(:empty)) { /* 登入錯誤時增加彈窗高度 */
+  height: 326px; /* 預留錯誤訊息下方 16px 的空間 */
+}
+
+.auth-dialog.signup-mode:has(#signup-message:not(:empty)) { /* 註冊錯誤時增加彈窗高度 */
+  height: 383px; /* 預留錯誤訊息下方 16px 的空間 */
 }
 
 .auth-switch { /* 設定登入註冊切換文字 */
