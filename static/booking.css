@@ -1,0 +1,501 @@
+.booking-page { /* 預約頁面主要區域 */
+  position: relative; 
+  width: 100%; /* 頁面填滿瀏覽器寬度 */
+  height: 1092px; /* 1250 - 54 - 104=1092 中間主要內容高度*/
+  color: #666666; 
+  font-family: "Noto Sans TC", sans-serif; 
+} 
+
+.booking-headline { /* 頁面上方 您好，某某，待預訂的行程如下 */
+  position: absolute; 
+  top: 40px; /* 導覽列下方距離 */
+  left: 50%; /* 將區域定位到畫面中央 */
+  width: 1000px; 
+  height: 27px; 
+  margin: 0; /* 移除預設外距 */
+  transform: translateX(-50%); /* 讓 1000px 區域水平置中 */
+} 
+
+.booking-headline p { /* 設定問候文字 */
+  margin: 0; /* 移除段落預設外距 */
+  font-size: 19px; 
+  font-weight: 700; 
+  line-height: 16px; 
+} 
+
+.booking-content { /* 設定預約內容容器 */
+  position: static; /* 讓子元素相對 booking-page 定位 */
+  width: 100%; /* 讓內容使用完整頁面寬度 */
+  margin: 0; /* 移除預設外距 */
+} 
+
+.booking-trip { 
+  position: absolute; 
+  top: 97px; /* 44 + 38 + 15 */
+  left: 50%; /* 將行程區域定位到畫面中央 */
+  display: flex; /* 水平排列 */
+  width: 980px; 
+  height: 200px; 
+  transform: translateX(-50%); /* 讓行程區域水平置中 */
+} 
+
+.booking-image-wrapper { /* 圖片區域 250×200 */
+  width: 250px; 
+  height: 200px; 
+  overflow: hidden; /* 隱藏超出圖片區域的內容 */
+} 
+
+.booking-image-wrapper img { /* 設定景點圖片 */
+  position: relative; /* 讓圖片可以使用 Left 偏移 */
+  left: -8px; 
+  width: 266px; 
+  height: 200px; 
+  object-fit: cover; 
+} 
+
+.booking-info { /* 景點預約資訊區 */
+  width: 700px; 
+  height: 170px; 
+  margin-left: 30px; /* 圖片與資訊間距 */
+} 
+
+.booking-info h2 { /* 設定景點名稱 */
+  height: 24px; /* 區域高度 */
+  margin: 0 0 20px; /* 設定名稱與第一列資料間距 */
+  color: #448899; 
+  font-size: 16px; 
+  font-weight: 700; 
+  line-height: 13.3px; 
+} 
+
+.booking-info p { /* 設定日期時間等資訊 */
+  height: 24px; 
+  margin: 0 0 10px; 
+  font-size: 16px; 
+  line-height: 13.3px; 
+  white-space: nowrap; /* 讓資訊維持單行 */
+} 
+
+.booking-info strong { /* 設定日期等欄位標籤 */
+  font-weight: 700; 
+} 
+
+#delete-booking-button { /* 刪除圖示 */
+  position: absolute; /* 使用 Figma 的絕對定位 */
+  top: 0; /* 對齊行程區域頂端 */
+  right: 0; /* 對齊行程區域右側 */
+  width: 30px; 
+  height: 30px; 
+  margin: 0; 
+  padding: 0; 
+  border: 0; 
+  background: transparent; /* 移除按鈕背景 */
+  cursor: pointer; /* 顯示可點擊游標 */
+} 
+
+#delete-booking-button img { /* 設定刪除圖片 */
+  width: 30px; 
+  height: 30px; 
+} 
+
+.booking-separator { /* 內容分隔線 */
+  position: absolute; 
+  left: 50%; /* 將分隔線定位到畫面中央 */
+  width: 1200px; 
+  height: 1px; /* 設定分隔線高度 */
+  margin: 0; /* 移除預設外距 */
+  border: 0; /* 移除預設邊框 */
+  border-top: 1px solid #e8e8e8; 
+  transform: translateX(-50%); /* 讓分隔線水平置中 */
+} 
+
+.booking-content > .booking-separator:nth-of-type(1) { /* 第一條分隔線 */
+  top: 337px; /* 391-54=337 */
+} 
+
+.booking-content > .booking-separator:nth-of-type(2) { /* 第二條分隔線 */
+  top: 644px; /* 698-54=644 */
+} 
+
+.booking-content > .booking-separator:nth-of-type(3) { /* 第三條分隔線 */
+  top: 912px; /* 966-54=912 */
+} 
+
+.contact-section { /* 聯絡資訊區域 */
+  position: absolute; /* 使用 Figma 的固定位置 */
+  top: 377px; /* 391px + 40px - 54px = 377px */
+  left: 50%; /* 將區域定位到畫面中央 */
+  width: 980px; 
+  height: 227px; 
+  transform: translateX(-50%); /* 讓區域水平置中 */
+} 
+
+.payment-section { /* 付款資訊區域*/
+  position: absolute; /* 固定位置 */
+  top: 684px; /* 738px - 54px = 684px */
+  left: 50%; /* 將區域定位到畫面中央 */
+  width: 980px; 
+  height: 188px; 
+  transform: translateX(-50%); /* 讓區域水平置中 */
+} 
+
+.contact-section h2, .payment-section h2 { /* 設定兩個區域的標題 */
+  position: absolute; /* 使用 Figma 的固定位置 */
+  top: 0; /* 對齊區域頂端 */
+  left: 0; /* 對齊區域左側 */
+  display: flex; 
+  align-items: center; 
+  width: 980px; 
+  height: 24px; 
+  margin: 0; 
+  color: #666666; 
+  font-size: 19px; 
+  font-weight: 700; 
+  line-height: 16px; 
+} 
+
+.contact-section label, .payment-section label { /* 設定聯絡姓名 */
+  position: absolute; 
+  left: 0; /* 對齊區域左側 */
+  display: flex; 
+  align-items: center; 
+  width: 81px; 
+  height: 24px; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: 13.3px; 
+} 
+
+.contact-section input, .payment-section input { /* 設定輸入框 */
+  position: absolute; 
+  left: 81px; 
+  width: 200px; 
+  height: 38px; 
+  box-sizing: border-box; /* 讓寬度與高度包含邊框和內距 */
+  padding: 10px; 
+  border: 1px solid #e8e8e8; 
+  border-radius: 5px; 
+  font-family: "Noto Sans TC", sans-serif; 
+  font-size: 16px; 
+  font-weight: 500; 
+  line-height: 13.3px; 
+  color: #000000; 
+} 
+
+.contact-section input::placeholder, .payment-section input::placeholder { /* 預設輸入提示文字 */
+  color: #757575; 
+  font-weight: 500; 
+  opacity: 1; /* 保持提示文字的原始顏色濃度 */
+} 
+
+.contact-section p { /* 設定聯絡提醒文字 */
+  position: absolute; 
+  top: 203px; 
+  left: 0; 
+  width: 608px; 
+  height: 24px; 
+  margin: 0; 
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 700; 
+  line-height: 13.3px; 
+} 
+
+.booking-confirm { /* 確認預約區域 */
+  position: absolute; 
+  top: 952px; /* 1006 - 54 = 952px */
+  left: 50%; /* 區域定位到畫面中央 */
+  width: 980px; 
+  height: 100px; 
+  transform: translateX(-50%); /* 讓區域水平置中 */
+} 
+
+.booking-confirm p { /* 設定總價文字 */
+  position: absolute; 
+  top: 0; /* 對齊確認區域頂端 */
+  right: 0; /* 對齊確認區域右側 */
+  width: 174px; /* 總價欄位寬度 */
+  height: 20px; /* 總價欄位高度 */
+  margin: 0; /* 移除段落預設外距 */
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 700; 
+  line-height: 13.3px; 
+  text-align: right; /*總價靠右對齊 */
+} 
+
+#confirm-booking-button { /* 設定確認付款按鈕 */
+  position: absolute; 
+  top: 42px; 
+  right: 0; 
+  width: 173px; 
+  height: 36px; 
+  padding: 0; 
+  border: 0; /* 移除按鈕邊框 */
+  border-radius: 5px; 
+  background-color: #448899; 
+  color: #ffffff; 
+  font-size: 19px; 
+  line-height: 16px; 
+  cursor: pointer; /* 顯示可點擊游標 */
+} 
+
+.empty-booking { /* 設定沒有預約時的文字 */
+  position: absolute; 
+  top: 97px; /* 151px - 54px = 97px */
+  left: 50%; /* 將文字區域定位到畫面中央 */
+  width: 1000px; 
+  height: 24px; 
+  margin: 0; /* 移除段落預設外距 */
+  padding-left: 10px; /* 文字左側位置 */
+  color: #666666; 
+  font-size: 16px; 
+  font-weight: 400; 
+  line-height: 13.3px; 
+  transform: translateX(-50%); /* 讓空狀態區域水平置中 */
+} 
+
+@media (max-width: 600px) { /* 將 360px Figma 畫面套用到手機寬度 */
+
+  .booking-page { /* 設定手機版主要區域 */
+    height: 1341px; /* 手機版扣除導覽列與頁尾後的高度 */
+  } 
+
+  .booking-headline { 
+    top: 40px; /* 94px - 54px = 40px */
+    left: 0; /* 對齊手機畫面左側 */
+    width: 360px; /* headline 寬度 */
+    height: 27px; /* headline 高度 */
+    padding-left: 10px; /*  文字左側 10px */
+    transform: none; /* 取消桌面版水平置中 */
+  } 
+
+  .booking-content > .booking-separator { /* 設定手機版分隔線寬度 */
+    left: 10px; 
+    width: 340px; 
+    transform: none; /* 取消桌面版水平置中 */
+  } 
+
+  .booking-trip { /* 整個行程區域 */
+    top: 97px; /* 151px - 54px = 97px */
+    left: 10px; /* Figma 手機行程區域左側位置 */
+    display: block; /* 手機版改為上下排列 */
+    width: 340px; 
+    height: 430px; /* 圖片 200px 加上資訊區域 200px 與間距 */
+    transform: none; /* 取消桌面版水平置中 */
+  } 
+
+  .booking-image-wrapper { /* 手機版圖片 */
+    width: 340px; 
+    height: 200px; 
+  } 
+
+  .booking-image-wrapper img { /* 手機版 image 10 圖片 */
+    left: 0; /* 手機版圖片左側位置 */
+    top: -28px; /*  Top 偏移 */
+    width: 340px; 
+    height: 256px; 
+  } 
+
+  .booking-info { /* 行程區域裡面的文字資訊 */
+    width: 340px; /* Figma 手機資訊寬度 */
+    height: 200px; /* Figma 手機資訊高度 */
+    margin: 30px 0 0; /* 圖片下方距離 30px */
+  } 
+
+  #delete-booking-button { /* 刪除 */
+  top: 400px; /* 551 - 151 = 400px */
+  right: 0; /* 對齊手機行程區域右側 */
+  margin: 0; /* 移除手機版自動外距 */
+}
+
+  .booking-content > .booking-separator:nth-of-type(1) { /* 手機版的第一條分隔線 */
+    top: 557px; /* 611 - 54 = 557px */
+  } 
+
+  .contact-section { /* 聯絡資訊 */
+    top: 597px; /* 651-54 = 597px */
+    left: 10px; 
+    width: 340px; 
+    height: 256px; 
+    transform: none; /* 取消桌面版水平置中 */
+  } 
+
+  .payment-section { /* 付款資訊 */
+    top: 933px; 
+    left: 10px; 
+    width: 340px; 
+    height: 188px; 
+    transform: none; /* 取消桌面版水平置中 */
+  } 
+
+  .contact-section h2, .payment-section h2 { /* 設定手機版標題寬度 */
+    width: 340px; 
+  } 
+
+  .contact-section p { /* 聯絡提醒 */
+    width: 340px; 
+    height: 48px; 
+    line-height: 100%; 
+  } 
+
+  .booking-content > .booking-separator:nth-of-type(2) { /* 第二條分隔線 */
+    top: 893px; 
+  } 
+
+  .booking-content > .booking-separator:nth-of-type(3) { /* 第三條分隔線 */
+    top: 1161px; 
+  } 
+
+  .booking-confirm { /* 確認區域 */
+    top: 1201px; 
+    left: 10px; 
+    width: 340px; 
+    height: 100px; 
+    transform: none; /* 取消桌面版水平置中 */
+  } 
+
+} /* 結束手機版 RWD 設定 */
+
+.contact-field, .payment-field { /* field 容器 */
+  position: absolute; /* 讓欄位的 Top 定位 */
+  left: 0; /* 對齊區域左側 */
+  width: 340px; /*  field 寬度 */
+  height: 38px; /* field 高度 */
+} 
+
+.contact-section > .contact-field:nth-of-type(1), .payment-section > .payment-field:nth-of-type(1) { /* 設定第一個 Figma field */
+  top: 44px; /* Figma field Top 數值 */
+} 
+
+.contact-section > .contact-field:nth-of-type(2), .payment-section > .payment-field:nth-of-type(2) { /* 設定第二個 Figma field */
+  top: 97px; /* Figma field Top 數值 */
+} 
+
+.contact-section > .contact-field:nth-of-type(3), .payment-section > .payment-field:nth-of-type(3) { /* 設定第三個 Figma field */
+  top: 150px; /* Figma field Top 數值 */
+} 
+
+.contact-field label, .payment-field label { /* 對應標籤文字 */
+  top: 7px; /* 標籤在 field 內的 Top 數值 */
+  left: 0; /* 對齊 field 左側 */
+} 
+
+.contact-field input, .payment-field input { /* 對應 input 元件 */
+  top: 0; /* input 在 field 內的 Top 數值 */
+  left: 81px; /* 寬度數值 */
+} 
+
+@media (max-width: 600px) { /* 手機版寬度 */
+
+  .contact-field, .payment-field { /* 設定手機版 field 容器 */
+    width: 340px; /* 手機版 field 寬度 */
+  } 
+
+} 
+
+@media (min-width: 1201px) { /* 套用 Desktop 空狀態頁面 */
+  .booking-page.empty-state { /* 設定沒有預約時的主要內容高度 */
+    height: 161px; /* Figma Footer Top 215px - 導覽列54px */
+  } /* 結束空狀態主要內容 */
+
+  .booking-page.empty-state + .footer { /* 設定空狀態專用頁尾 */
+    height: 865px; /* Figma 空狀態 footer 高度 */
+  } /* 結束空狀態頁尾 */
+} /* 結束 Desktop 空狀態設定 */
+
+@media (min-width: 601px) and (max-width: 1200px) { /* 套用平板版畫面 */
+  .booking-page { /* 設定平板主要區域 */
+    height: auto; /* 讓高度依照內容自然延伸 */
+    min-height: calc(100vh - 158px); /* 保留導覽列與頁尾空間 */
+  } /* 結束平板主要區域 */
+
+  .booking-headline { /* 設定平板問候文字區域 */
+    position: relative; /* 改用正常文件排列 */
+    top: auto; /* 移除 Desktop 固定 Top */
+    left: auto; /* 移除 Desktop 固定 Left */
+    width: calc(100% - 30px); /* 左右各保留15px */
+    height: auto; /* 高度依文字自然延伸 */
+    margin: 40px 15px 30px; /* 設定平板問候文字間距 */
+    transform: none; /* 移除 Desktop 水平位移 */
+  } /* 結束平板問候文字 */
+
+  .booking-trip { /* 設定平板行程區域 */
+    position: relative; /* 改用正常文件排列 */
+    top: auto; /* 移除 Desktop 固定 Top */
+    left: auto; /* 移除 Desktop 固定 Left */
+    width: calc(100% - 30px); /* 左右各保留15px */
+    height: auto; /* 高度依圖片與資訊自然延伸 */
+    margin: 0 15px 30px; /* 設定平板行程區域間距 */
+    transform: none; /* 移除 Desktop 水平位移 */
+  } /* 結束平板行程區域 */
+
+  .booking-image-wrapper { /* 設定平板圖片區域 */
+    flex: 0 1 45%; /* 讓圖片區域使用約45%寬度 */
+    width: auto; /* 取消 Desktop 固定寬度 */
+    min-width: 0; /* 允許圖片區域縮小 */
+  } /* 結束平板圖片區域 */
+
+  .booking-image-wrapper img { /* 設定平板景點圖片 */
+    left: 0; /* 移除 Desktop 圖片左側偏移 */
+    width: 100%; /* 讓圖片跟著容器縮放 */
+    height: 200px; /* 保留圖片高度 */
+  } /* 結束平板景點圖片 */
+
+  .booking-info { /* 設定平板景點資訊 */
+    flex: 1 1 55%; /* 讓資訊區域使用剩餘寬度 */
+    width: auto; /* 取消 Desktop 固定寬度 */
+    min-width: 0; /* 允許資訊區域縮小 */
+    margin-left: 30px; /* 保留圖片與資訊間距 */
+  } /* 結束平板景點資訊 */
+
+  .booking-info p { /* 設定平板景點詳細資料 */
+    white-space: normal; /* 允許資料在平板換行 */
+  } /* 結束平板景點詳細資料 */
+
+  .booking-content > .booking-separator { /* 設定平板分隔線 */
+    position: relative; /* 改用正常文件排列 */
+    top: auto; /* 移除 Desktop 固定 Top */
+    left: auto; /* 移除 Desktop 固定 Left */
+    width: calc(100% - 30px); /* 左右各保留15px */
+    margin: 40px 15px; /* 設定分隔線上下間距 */
+    transform: none; /* 移除 Desktop 水平位移 */
+  } /* 結束平板分隔線 */
+
+  .contact-section,
+  .payment-section,
+  .booking-confirm { /* 設定平板表單與確認區域 */
+    position: relative; /* 改用正常文件排列 */
+    top: auto; /* 移除 Desktop 固定 Top */
+    left: auto; /* 移除 Desktop 固定 Left */
+    width: calc(100% - 30px); /* 左右各保留15px */
+    margin: 0 15px; /* 左右各保留15px */
+    transform: none; /* 移除 Desktop 水平位移 */
+  } /* 結束平板表單與確認區域 */
+
+  .contact-section h2,
+  .payment-section h2 { /* 設定平板區域標題 */
+    width: 100%; /* 讓標題跟著區域寬度縮放 */
+  } /* 結束平板區域標題 */
+
+  .contact-section p { /* 設定平板聯絡提醒文字 */
+    width: 100%; /* 讓提醒文字跟著區域寬度縮放 */
+    height: auto; /* 讓文字換行時自然增加高度 */
+    line-height: 24px; /* 提高平板多行文字可讀性 */
+  } /* 結束平板聯絡提醒文字 */
+
+  .empty-booking { /* 設定平板沒有預約文字 */
+    position: relative; /* 改用正常文件排列 */
+    top: auto; /* 移除 Desktop 固定 Top */
+    left: auto; /* 移除 Desktop 固定 Left */
+    width: calc(100% - 30px); /* 左右各保留15px */
+    height: auto; /* 高度依文字自然延伸 */
+    margin: 40px 15px; /* 設定平板空狀態間距 */
+    padding-left: 0; /* 移除 Desktop 左側內距 */
+    transform: none; /* 移除 Desktop 水平位移 */
+  } /* 結束平板空狀態文字 */
+} /* 結束平板版畫面 */
+
+
+ 

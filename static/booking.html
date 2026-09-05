@@ -1,11 +1,142 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Booking</title>
-</head>
-<body>
-  
-</body>
-</html>
+<!DOCTYPE html> <!-- 宣告使用 HTML5 -->
+<html lang="zh-Hant"> <!-- 設定網頁語言為繁體中文 -->
+
+<head> <!-- 開始設定網頁資訊 -->
+  <meta charset="UTF-8"> <!-- 設定文字編碼 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 支援 RWD -->
+  <title>台北一日遊｜預訂行程</title> <!-- 設定網頁標題 -->
+  <link rel="stylesheet" href="/static/index.css"> <!-- 載入共用樣式 -->
+  <link rel="stylesheet" href="/static/booking.css"> <!-- 載入預約頁面樣式 -->
+</head> <!-- 結束設定網頁資訊 -->
+
+<body> <!-- 開始網頁內容 -->
+
+  <header class="nav-bar"> <!-- 建立導覽列 -->
+    <div class="nav-content"> <!-- 建立導覽列內容容器 -->
+      <a class="site-title" href="/">台北一日遊</a> <!-- 建立回到首頁的網站標題 -->
+      <nav class="nav-links"> <!-- 建立導覽連結區域 -->
+        <a class="booking-link" href="/booking">預訂行程</a> <!-- 建立預訂行程連結 -->
+        <a class="auth-link" href="#">登入/註冊</a> <!-- 建立登入註冊連結 -->
+      </nav> <!-- 結束導覽連結區域 -->
+    </div> <!-- 結束導覽列內容容器 -->
+  </header> <!-- 結束導覽列 -->
+
+  <main class="booking-page"> <!-- 建立預約頁面主要內容 -->
+
+    <section class="booking-headline"> <!-- 建立使用者問候文字區域 -->
+      <p>您好，<span id="booking-user-name"></span>，待預訂的行程如下：</p> <!-- 顯示使用者名稱與提示文字 -->
+    </section> <!-- 結束使用者問候文字區域 -->
+
+    <p id="empty-booking" class="empty-booking hidden">目前沒有任何待預定的行程</p> <!-- 顯示沒有預約時的文字 -->
+
+    <section id="booking-content" class="booking-content"> <!-- 建立有預約時的內容區域 -->
+
+      <section class="booking-trip"> <!-- 建立行程資訊區域 -->
+        <div class="booking-image-wrapper"> <!-- 建立景點圖片容器 -->
+          <img id="booking-image" src="" alt="預約景點圖片"> <!-- 顯示預約景點圖片 -->
+        </div> <!-- 結束景點圖片容器 -->
+
+        <div class="booking-info"> <!-- 建立景點預約資訊容器 -->
+          <h2 id="booking-attraction-name">台北一日遊</h2> <!-- 顯示景點名稱 -->
+          <p><strong>日期：</strong><span id="booking-date"></span></p> <!-- 顯示預約日期 -->
+          <p><strong>時間：</strong><span id="booking-time"></span></p> <!-- 顯示預約時間 -->
+          <p><strong>費用：</strong>新台幣 <span id="booking-price"></span> 元</p> <!-- 顯示預約費用 -->
+          <p><strong>地點：</strong><span id="booking-address"></span></p> <!-- 顯示景點地址 -->
+        </div> <!-- 結束景點預約資訊容器 -->
+
+        <button id="delete-booking-button" type="button" aria-label="刪除預約"> <!-- 建立刪除預約按鈕 -->
+          <img src="/static/images/delete.png" alt="刪除預約"> <!-- 顯示 Figma 的垃圾桶圖示 -->
+        </button> <!-- 結束刪除預約按鈕 -->
+      </section> <!-- 結束行程資訊區域 -->
+
+      <hr class="booking-separator"> <!-- 建立行程與聯絡資訊分隔線 -->
+
+      <section class="contact-section"> <!-- 建立聯絡資訊區域 -->
+        <h2>您的聯絡資訊</h2> <!-- 顯示聯絡資訊標題 -->
+        <div class="contact-field"> <!-- 建立 Figma 第一個 340×38 欄位容器 -->
+          <label for="contact-name">聯絡姓名：</label> <!-- 建立姓名欄位標籤 -->
+          <input id="contact-name" type="text"> <!-- 建立姓名輸入框 -->
+        </div> <!-- 結束姓名欄位容器 -->
+        <div class="contact-field"> <!-- 建立 Figma 第二個 340×38 欄位容器 -->
+          <label for="contact-email">連絡信箱：</label> <!-- 建立 Email 欄位標籤 -->
+          <input id="contact-email" type="email"> <!-- 建立 Email 輸入框 -->
+        </div> <!-- 結束 Email 欄位容器 -->
+        <div class="contact-field"> <!-- 建立 Figma 第三個 340×38 欄位容器 -->
+          <label for="contact-phone">手機號碼：</label> <!-- 建立手機欄位標籤 -->
+          <input id="contact-phone" type="tel"> <!-- 建立手機輸入框 -->
+        </div> <!-- 結束手機欄位容器 -->
+        <p>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</p> <!-- 顯示聯絡提醒 -->
+      </section> <!-- 結束聯絡資訊區域 -->
+
+      <hr class="booking-separator"> <!-- 建立聯絡與付款資訊分隔線 -->
+
+      <section class="payment-section"> <!-- 建立付款資訊區域 -->
+        <h2>信用卡付款資訊</h2> <!-- 顯示付款資訊標題 -->
+        <div class="payment-field"> <!-- 建立 Figma 第一個 340×38 欄位容器 -->
+          <label for="card-number">卡片號碼：</label> <!-- 建立卡號欄位標籤 -->
+          <input id="card-number" type="text" placeholder="**** **** **** ****"> <!-- 建立卡號輸入框 -->
+        </div> <!-- 結束卡號欄位容器 -->
+        <div class="payment-field"> <!-- 建立 Figma 第二個 340×38 欄位容器 -->
+          <label for="card-expiry">過期時間：</label> <!-- 建立過期時間欄位標籤 -->
+          <input id="card-expiry" type="text" placeholder="MM / YY"> <!-- 建立過期時間輸入框 -->
+        </div> <!-- 結束過期時間欄位容器 -->
+        <div class="payment-field"> <!-- 建立 Figma 第三個 340×38 欄位容器 -->
+          <label for="card-cvv">驗證密碼：</label> <!-- 建立驗證密碼欄位標籤 -->
+          <input id="card-cvv" type="text" placeholder="CVV"> <!-- 建立驗證密碼輸入框 -->
+        </div> <!-- 結束驗證密碼欄位容器 -->
+      </section> <!-- 結束付款資訊區域 -->
+
+      <hr class="booking-separator"> <!-- 建立付款與確認區域分隔線 -->
+
+      <section class="booking-confirm"> <!-- 建立訂購確認區域 -->
+        <p>總價：新台幣 <span id="booking-total-price"></span> 元</p> <!-- 顯示總價格 -->
+        <button id="confirm-booking-button" type="button">確認訂購並付款</button> <!-- 建立確認付款按鈕 -->
+      </section> <!-- 結束訂購確認區域 -->
+
+    </section> <!-- 結束有預約時的內容區域 -->
+
+  </main> <!-- 結束預約頁面主要內容 -->
+
+  <footer class="footer"> <!-- 建立網站頁尾 -->
+    <p class="footer-text">COPYRIGHT © 2021 台北一日遊</p> <!-- 顯示版權文字 -->
+  </footer> <!-- 結束網站頁尾 -->
+
+  <div id="auth-modal" class="auth-modal hidden"> <!-- 建立登入註冊彈窗外層 -->
+    <div class="auth-backdrop"></div> <!-- 建立黑色半透明背景遮罩 -->
+    <div class="auth-dialog"> <!-- 建立登入註冊彈窗容器 -->
+      <div class="auth-decorator-bar"></div> <!-- 建立上方裝飾條 -->
+      <button id="auth-close-button" class="auth-close-button" type="button"> <!-- 建立關閉按鈕 -->
+        <img src="/static/images/close.png" alt="關閉"> <!-- 顯示關閉圖示 -->
+      </button> <!-- 結束關閉按鈕 -->
+      <div class="auth-main"> <!-- 建立彈窗主要內容區 -->
+        <div id="signin-view"> <!-- 建立登入畫面 -->
+          <h2 class="auth-title">登入會員帳號</h2> <!-- 顯示登入標題 -->
+          <form id="signin-form" class="auth-form"> <!-- 建立登入表單 -->
+            <input id="signin-email" type="email" placeholder="輸入電子信箱" required> <!-- 建立登入 Email 輸入框 -->
+            <input id="signin-password" type="password" placeholder="輸入密碼" required> <!-- 建立登入密碼輸入框 -->
+            <button type="submit">登入帳戶</button> <!-- 建立登入按鈕 -->
+          </form> <!-- 結束登入表單 -->
+          <p class="auth-switch">還沒有帳戶？<button id="show-signup-button" type="button">點此註冊</button></p> <!-- 建立切換註冊按鈕 -->
+          <p id="signin-message" class="auth-message"></p> <!-- 顯示登入錯誤訊息 -->
+        </div> <!-- 結束登入畫面 -->
+        <div id="signup-view" class="hidden"> <!-- 建立註冊畫面 -->
+          <h2 class="auth-title">註冊會員帳號</h2> <!-- 顯示註冊標題 -->
+          <form id="signup-form" class="auth-form"> <!-- 建立註冊表單 -->
+            <input id="signup-name" type="text" placeholder="輸入姓名" required> <!-- 建立註冊姓名輸入框 -->
+            <input id="signup-email" type="email" placeholder="輸入電子信箱" required> <!-- 建立註冊 Email 輸入框 -->
+            <input id="signup-password" type="password" placeholder="輸入密碼" required> <!-- 建立註冊密碼輸入框 -->
+            <button type="submit">註冊新帳戶</button> <!-- 建立註冊按鈕 -->
+          </form> <!-- 結束註冊表單 -->
+          <p class="auth-switch">已經有帳戶了？<button id="show-signin-button" type="button">點此登入</button></p> <!-- 建立切換登入按鈕 -->
+          <p id="signup-message" class="auth-message"></p> <!-- 顯示註冊錯誤訊息 -->
+        </div> <!-- 結束註冊畫面 -->
+      </div> <!-- 結束彈窗主要內容區 -->
+    </div> <!-- 結束登入註冊彈窗容器 -->
+  </div> <!-- 結束登入註冊彈窗外層 -->
+
+  <script src="/static/auth.js"></script> <!-- 載入共用會員功能 -->
+  <script src="/static/booking.js"></script> <!-- 載入預約頁面的 JavaScript -->
+
+</body> <!-- 結束網頁內容 -->
+
+</html> <!-- 結束 HTML 文件 -->
