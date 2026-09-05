@@ -34,6 +34,29 @@ class UserSignin(BaseModel):  # 建立登入資料的格式
     email: str  # 接收使用者輸入的 Email
     password: str  # 接收使用者輸入的密碼
 
+class BookingCreate(BaseModel):  # 建立預約資料格式
+    attractionId: int  # 接收景點編號
+    date: str  # 接收預約日期
+    time: str  # 接收預約時段，只允許 morning 或 afternoon
+
+def get_user_id(authorization: str | None) -> int | None:  # 建立取得登入者 ID 的函式
+    if not authorization or not authorization.startswith("Bearer "):  # 檢查是否有 Bearer Token
+        return None  # 沒有 Token 時回傳沒有登入
+
+    token = authorization.split(" ", 1)[1]  # 從標頭中取出真正的 Token
+
+    try:  # 開始驗證 JWT Token
+        payload = jwt.decode(  # 解碼並驗證 JWT Token
+            token,  # 傳入前端送來的 Token
+            JWT_SECRET,  # 使用後端的 JWT 密鑰
+            algorithms=[JWT_ALGORITHM]  # 指定 JWT 使用的演算法
+        )  # 結束 Token 解碼
+
+        return payload["id"]  # 回傳 Token 裡的使用者 ID
+
+    except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, KeyError):  # 處理過期、無效或缺少資料的 Token
+        return None  # Token 驗證失敗時回傳沒有登入
+
 @app.post("/api/user")  # 建立 POST /api/user 註冊 API
 async def signup(user: UserSignup):  # 接收前端傳來的註冊資料
     conn = get_connection()  # 連線到 MySQL 資料庫
@@ -383,3 +406,198 @@ async def get_attractions(
     finally:
         cursor.close()
         conn.close()        
+
+@app.post("/api/booking")  # 建立 POST /api/booking 預約 API
+async def create_booking(  # 建立新增預約的函式
+    booking: BookingCreate,  # 接收前端傳來的預約資料
+    authorization: str | None = Header(default=None)  # 接收 Authorization 標頭
+):  # 結束函式參數設定
+    user_id = get_user_id(authorization)  # 從 Token 取得目前登入者的 ID
+
+    if user_id is None:  # 如果無法取得使用者 ID
+        return JSONResponse(  # 回傳尚未登入的錯誤訊息
+            status_code=401,  # 設定 HTTP 401，表示尚未授權
+            content={  # 設定回傳內容
+                "error": True,  # 表示發生錯誤
+                "message": "未登入會員"  # 告知使用者需要先登入
+            }  
+        ) 
+
+    if booking.time not in ("morning", "afternoon"):  # 檢查預約時段是否正確
+        return JSONResponse(  # 回傳錯誤訊息
+            status_code=400,  # 設定 HTTP 400，表示資料格式錯誤
+            content={  # 設定回傳內容
+                "error": True,  # 表示發生錯誤
+                "message": "預約時段不正確"  # 告知可使用的時段不正確
+            }  
+        )  
+
+    price = 2000 if booking.time == "morning" else 2500  # 根據時段決定預約價格
+
+    conn = get_connection()  # 連線到 MySQL 資料庫
+    cursor = conn.cursor(dictionary=True)  # 建立可以回傳字典格式的游標
+
+    try:  # 開始執行建立預約的資料庫操作
+        cursor.execute(  # 查詢景點是否存在
+            "SELECT id FROM attractions WHERE id = %s",  # 使用景點編號查詢景點
+            (booking.attractionId,)  # 傳入前端送來的景點編號
+        )  
+
+        attraction = cursor.fetchone()  # 取得景點查詢結果
+
+        if attraction is None:  # 如果找不到這個景點
+            return JSONResponse(  # 回傳景點不存在的錯誤訊息
+                status_code=400,  # 設定 HTTP 400，表示資料錯誤
+                content={  # 設定回傳內容
+                    "error": True,  # 表示發生錯誤
+                    "message": "景點編號不正確"  # 告知景點編號錯誤
+                } 
+            )  
+
+        cursor.execute(  # 新增預約或取代使用者原本的預約
+            """INSERT INTO bookings (user_id, attraction_id, booking_date, booking_time, price)
+            VALUES (%s, %s, %s, %s, %s)
+            ON DUPLICATE KEY UPDATE
+                attraction_id = VALUES(attraction_id),
+                booking_date = VALUES(booking_date),
+                booking_time = VALUES(booking_time),
+                price = VALUES(price)""",  # 使用相同 user_id 時更新原本的預約
+            (user_id, booking.attractionId, booking.date, booking.time, price)  # 傳入預約欄位資料
+        ) 
+
+        conn.commit()  # 確認並儲存資料庫變更
+
+        return {  # 回傳建立預約成功的結果
+            "ok": True  # 表示預約成功
+        }  
+
+    except Exception as error:  # 如果資料庫操作發生錯誤
+        conn.rollback()  # 發生錯誤時取消這次資料庫操作
+        return JSONResponse(  # 回傳伺服器錯誤訊息
+            status_code=500,  # 設定 HTTP 500，表示伺服器發生錯誤
+            content={  # 設定回傳內容
+                "error": True,  # 表示發生錯誤
+                "message": str(error)  # 回傳實際錯誤原因
+            }  
+        )  
+
+    finally:  # 無論成功或失敗都會執行
+        cursor.close()  # 關閉資料庫游標
+        conn.close()  # 關閉資料庫連線
+
+@app.get("/api/booking")  # 建立 GET /api/booking 取得預約 API
+async def get_booking(  # 建立取得預約資料的函式
+    authorization: str | None = Header(default=None)  # 接收 Authorization 標頭
+):  
+    user_id = get_user_id(authorization)  # 從 Token 取得目前登入者的 ID
+
+    if user_id is None:  # 如果使用者尚未登入
+        return JSONResponse(  # 回傳尚未登入的錯誤訊息
+            status_code=401,  # 設定 HTTP 401，表示尚未授權
+            content={  # 設定回傳內容
+                "error": True,  # 表示發生錯誤
+                "message": "未登入會員"  # 告知使用者需要先登入
+            }  
+        )  
+
+    conn = get_connection()  # 連線到 MySQL 資料庫
+    cursor = conn.cursor(dictionary=True)  # 建立字典格式的資料庫游標
+
+    try:  # 開始查詢預約資料
+        cursor.execute(  # 查詢目前使用者的預約和景點資料
+            """SELECT
+                b.booking_date,
+                b.booking_time,
+                b.price,
+                a.id AS attraction_id,
+                a.name,
+                a.address,
+                a.images
+            FROM bookings AS b
+            JOIN attractions AS a ON b.attraction_id = a.id
+            WHERE b.user_id = %s""",  # 只查詢目前登入使用者的預約
+            (user_id,)  # 傳入使用者 ID
+        )  
+
+        booking = cursor.fetchone()  # 取得一筆預約資料
+
+        if booking is None:  # 如果使用者目前沒有預約
+            return {  # 回傳沒有預約的結果
+                "data": None  # 使用 null 表示沒有預約資料
+            }  
+
+        images = booking["images"]  # 取得景點圖片資料
+
+        if isinstance(images, str):  # 如果圖片資料是字串格式
+            images = json.loads(images)  # 將圖片字串轉換成 Python 陣列
+
+        return {  # 回傳預約資料
+            "data": {  # 建立預約資料物件
+                "attraction": {  # 建立景點資料物件
+                    "id": booking["attraction_id"],  # 回傳景點編號
+                    "name": booking["name"],  # 回傳景點名稱
+                    "address": booking["address"],  # 回傳景點地址
+                    "image": images[0] if images else None  # 回傳第一張景點圖片
+                },  
+                "date": booking["booking_date"].isoformat(),  # 將日期轉成文字格式
+                "time": booking["booking_time"],  # 回傳預約時段
+                "price": booking["price"]  # 回傳預約價格
+            }  
+        }  
+
+    except Exception as error:  # 如果資料庫操作發生錯誤
+        return JSONResponse(  # 回傳伺服器錯誤訊息
+            status_code=500,  # 設定 HTTP 500，表示伺服器發生錯誤
+            content={  # 設定回傳內容
+                "error": True,  # 表示發生錯誤
+                "message": str(error)  # 回傳實際錯誤原因
+            }  
+        )  
+
+    finally:  # 無論成功或失敗都會執行
+        cursor.close()  # 關閉資料庫游標
+        conn.close()  # 關閉資料庫連線
+
+@app.delete("/api/booking")  # 建立 DELETE /api/booking 刪除預約 API
+async def delete_booking(  # 建立刪除預約的函式
+    authorization: str | None = Header(default=None)  # 接收 Authorization 標頭
+):  
+    user_id = get_user_id(authorization)  # 從 Token 取得目前登入者的 ID
+
+    if user_id is None:  # 如果使用者尚未登入
+        return JSONResponse(  # 回傳尚未登入的錯誤訊息
+            status_code=401,  # 設定 HTTP 401，表示尚未授權
+            content={  # 設定回傳內容
+                "error": True,  # 表示發生錯誤
+                "message": "未登入會員"  # 告知使用者需要先登入
+            }  
+        )  
+
+    conn = get_connection()  # 連線到 MySQL 資料庫
+    cursor = conn.cursor()  # 建立資料庫游標
+
+    try:  # 開始執行刪除預約操作
+        cursor.execute(  # 刪除目前登入使用者的預約
+            "DELETE FROM bookings WHERE user_id = %s",  # 只刪除目前使用者的預約
+            (user_id,)  # 傳入使用者 ID
+        )  
+
+        conn.commit()  # 確認並儲存資料庫變更
+
+        return {  # 回傳刪除成功的結果
+            "ok": True  # 表示刪除成功
+        }  
+
+    except Exception as error:  # 如果資料庫操作發生錯誤
+        conn.rollback()  # 發生錯誤時取消這次資料庫操作
+        return JSONResponse(  # 回傳伺服器錯誤訊息
+            status_code=500,  # 設定 HTTP 500，表示伺服器發生錯誤
+            content={  # 設定回傳內容
+                "error": True,  # 表示發生錯誤
+                "message": str(error)  # 回傳實際錯誤原因
+            }  
+        )  
+
+    finally:  # 無論成功或失敗都會執行
+        cursor.close()  # 關閉資料庫游標
+        conn.close()  # 關閉資料庫連線

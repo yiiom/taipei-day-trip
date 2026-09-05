@@ -1,4 +1,5 @@
 const authLink = document.querySelector(".auth-link"); // 取得右上角登入／註冊連結
+const bookingLink = document.querySelector(".booking-link"); // 取得導覽列的預訂行程連結
 const authModal = document.querySelector("#auth-modal"); // 取得登入註冊彈窗
 const authDialog = document.querySelector(".auth-dialog"); // 取得彈窗內容區
 const authCloseButton = document.querySelector("#auth-close-button"); // 取得關閉按鈕
@@ -30,6 +31,19 @@ authLink.addEventListener("click", (event) => { // 監聽右上角登入／註�
   signupView.classList.add("hidden"); // 隱藏註冊畫面
   authDialog.classList.remove("signup-mode"); // 使用登入彈窗高度
 }); // 結束登入／註冊或登出事件
+
+bookingLink.addEventListener("click", (event) => { // 監聽預訂行程連結
+  event.preventDefault(); // 阻止連結直接跳轉
+  const token = localStorage.getItem("token"); // 取得瀏覽器中的登入 Token
+  if (token) { // 如果有 Token，代表使用者已登入
+    window.location.href = "/booking"; // 將使用者導向預約頁面
+    return; 
+  } 
+  authModal.classList.remove("hidden"); // 未登入時開啟登入註冊視窗
+  signinView.classList.remove("hidden"); // 顯示登入畫面
+  signupView.classList.add("hidden"); // 隱藏註冊畫面
+  authDialog.classList.remove("signup-mode"); // 使用登入視窗樣式
+}); 
 
 authCloseButton.addEventListener("click", () => { // 監聽右上角關閉按鈕
   authModal.classList.add("hidden"); // 隱藏登入註冊彈窗

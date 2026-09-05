@@ -88,3 +88,46 @@ morningTime.addEventListener("change", () => { // 監聽上半天選項的變化
 afternoonTime.addEventListener("change", () => { // 監聽下半天選項的變化
   bookingPrice.textContent = "新台幣 2500 元"; // 下半天時顯示 2500 元
 });
+
+const bookingForm = document.querySelector(".booking-form"); // 取得預約表單
+const bookingDate = document.querySelector("#booking-date"); // 取得日期輸入框
+const bookingTimeOptions = document.querySelectorAll('input[name="booking-time"]'); // 取得上午與下午選項
+
+bookingForm.addEventListener("submit", async (event) => { // 監聽開始預約行程按鈕
+  event.preventDefault(); // 阻止表單重新整理頁面
+  const token = localStorage.getItem("token"); // 取得瀏覽器中的登入 Token
+  if (!token) { // 如果使用者尚未登入
+    const authModal = document.querySelector("#auth-modal"); // 取得登入註冊視窗
+    const signinView = document.querySelector("#signin-view"); // 取得登入畫面
+    const signupView = document.querySelector("#signup-view"); // 取得註冊畫面
+    const authDialog = document.querySelector(".auth-dialog"); // 取得登入註冊視窗內容
+    authModal.classList.remove("hidden"); // 開啟登入註冊視窗
+    signinView.classList.remove("hidden"); // 顯示登入畫面
+    signupView.classList.add("hidden"); // 隱藏註冊畫面
+    authDialog.classList.remove("signup-mode"); // 使用登入視窗樣式
+    return; // 結束表單送出流程
+  } // 結束未登入判斷
+  const selectedTimeOption = Array.from(bookingTimeOptions).find((option) => option.checked); // 找出使用者選取的時間
+  if (!bookingDate.value || !selectedTimeOption) { // 如果沒有選日期或時間
+    alert("請選擇日期與時間"); // 提示使用者補齊資料
+    return; // 結束表單送出流程
+  } // 結束資料檢查
+  const response = await fetch("/api/booking", { // 呼叫建立預約 API
+    method: "POST", // 使用 POST 方法建立預約
+    headers: { // 設定請求標頭
+      "Content-Type": "application/json", // 指定傳送 JSON 資料
+      Authorization: `Bearer ${token}`, // 傳送登入者的 JWT Token
+    }, // 結束請求標頭
+    body: JSON.stringify({ // 建立要傳送的預約資料
+      attractionId: Number(attractionId), // 傳送目前景點編號
+      date: bookingDate.value, // 傳送使用者選擇的日期
+      time: selectedTimeOption.value, // 傳送使用者選擇的上午或下午
+    }), // 結束預約資料
+  }); // 結束建立預約 API
+  if (response.ok) { // 如果預約建立成功
+    window.location.href = "/booking"; // 導向預約頁面
+    return; // 結束表單送出流程
+  } // 結束成功判斷
+  const result = await response.json(); // 讀取後端錯誤訊息
+  alert(result.message || "預約建立失敗"); // 顯示預約失敗原因
+}); // 結束預約表單事件
