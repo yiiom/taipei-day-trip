@@ -387,6 +387,18 @@
   left: 81px; /* 寬度數值 */
 } 
 
+.payment-field .tpfield { /* 設定 TapPay 安全欄位 */
+  position: absolute; /* 讓欄位可以固定定位 */
+  top: 0; /* 對齊 payment-field 頂端 */
+  left: 81px; /* 避開左側標籤 */
+  width: 200px; /* 設定欄位寬度 */
+  height: 38px; /* 設定欄位高度 */
+  box-sizing: border-box; /* 讓寬度包含邊框與內距 */
+  padding: 10px; /* 設定欄位內距 */
+  border: 1px solid #e8e8e8; /* 設定欄位邊框 */
+  border-radius: 5px; /* 設定欄位圓角 */
+} 
+
 @media (max-width: 600px) { /* 手機版寬度 */
 
   .contact-field, .payment-field { /* 設定手機版 field 容器 */

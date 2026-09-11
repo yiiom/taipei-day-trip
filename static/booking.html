@@ -74,16 +74,16 @@
         <h2>信用卡付款資訊</h2> <!-- 顯示付款資訊標題 -->
         <div class="payment-field"> <!-- 建立 Figma 第一個 340×38 欄位容器 -->
           <label for="card-number">卡片號碼：</label> <!-- 建立卡號欄位標籤 -->
-          <input id="card-number" type="text" placeholder="**** **** **** ****"> <!-- 建立卡號輸入框 -->
+          <div id="card-number" class="tpfield"></div> <!-- 建立 TapPay 安全卡號欄位 -->
         </div> <!-- 結束卡號欄位容器 -->
         <div class="payment-field"> <!-- 建立 Figma 第二個 340×38 欄位容器 -->
-          <label for="card-expiry">過期時間：</label> <!-- 建立過期時間欄位標籤 -->
-          <input id="card-expiry" type="text" placeholder="MM / YY"> <!-- 建立過期時間輸入框 -->
+          <label for="card-expiration-date">過期時間：</label> <!-- 建立過期時間欄位標籤 -->
+          <div id="card-expiration-date" class="tpfield"></div> <!-- 建立 TapPay 安全有效期限欄位 -->
         </div> <!-- 結束過期時間欄位容器 -->
         <div class="payment-field"> <!-- 建立 Figma 第三個 340×38 欄位容器 -->
-          <label for="card-cvv">驗證密碼：</label> <!-- 建立驗證密碼欄位標籤 -->
-          <input id="card-cvv" type="text" placeholder="CVV"> <!-- 建立驗證密碼輸入框 -->
-        </div> <!-- 結束驗證密碼欄位容器 -->
+          <label for="card-ccv">驗證密碼：</label> <!-- 建立驗證密碼欄位標籤 -->
+          <div id="card-ccv" class="tpfield"></div> <!-- 建立 TapPay 安全驗證碼欄位 -->
+        </div> <!-- 結束驗證碼欄位容器 -->
       </section> <!-- 結束付款資訊區域 -->
 
       <hr class="booking-separator"> <!-- 建立付款與確認區域分隔線 -->
@@ -134,6 +134,7 @@
     </div> <!-- 結束登入註冊彈窗容器 -->
   </div> <!-- 結束登入註冊彈窗外層 -->
 
+  <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.14.0"></script> <!-- 載入 TapPay Web SDK，用於建立信用卡付款的 Prime -->
   <script src="/static/auth.js"></script> <!-- 載入共用會員功能 -->
   <script src="/static/booking.js"></script> <!-- 載入預約頁面的 JavaScript -->
 

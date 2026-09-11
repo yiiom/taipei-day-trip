@@ -1,5 +1,7 @@
 import os  # 匯入讀取環境變數的工具
 import json
+import requests  # 匯入 requests，用來呼叫 TapPay 後端 API
+import uuid  # 匯入 uuid，用來產生唯一訂單編號
 from fastapi import FastAPI,Request,Header
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -10,6 +12,8 @@ from datetime import datetime, timedelta, timezone  # 匯入時間工具，用�
 app=FastAPI()
 JWT_SECRET = os.getenv("JWT_SECRET")  # 從環境變數讀取 JWT 密鑰
 JWT_ALGORITHM = "HS256"  # 設定 JWT 使用的加密演算法
+TAPPAY_PARTNER_KEY = os.getenv("TAPPAY_PARTNER_KEY")  # 從環境變數讀取 TapPay Partner Key
+TAPPAY_MERCHANT_ID = os.getenv("TAPPAY_MERCHANT_ID")  # 從環境變數讀取 TapPay Merchant ID
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -38,6 +42,12 @@ class BookingCreate(BaseModel):  # 建立預約資料格式
     attractionId: int  # 接收景點編號
     date: str  # 接收預約日期
     time: str  # 接收預約時段，只允許 morning 或 afternoon
+
+class OrderCreate(BaseModel):  # 建立訂單付款資料格式
+    prime: str  # 接收 TapPay 回傳的一次性 Prime
+    name: str  # 接收聯絡人姓名
+    email: str  # 接收聯絡人 Email
+    phone: str  # 接收聯絡人手機號碼
 
 def get_user_id(authorization: str | None) -> int | None:  # 建立取得登入者 ID 的函式
     if not authorization or not authorization.startswith("Bearer "):  # 檢查是否有 Bearer Token
@@ -480,6 +490,109 @@ async def create_booking(  # 建立新增預約的函式
                 "message": str(error)  # 回傳實際錯誤原因
             }  
         )  
+
+    finally:  # 無論成功或失敗都會執行
+        cursor.close()  # 關閉資料庫游標
+        conn.close()  # 關閉資料庫連線
+
+@app.post("/api/orders")  # 建立 POST /api/orders 訂單付款 API
+async def create_order(  # 建立訂單付款函式
+    order: OrderCreate,  # 接收前端傳來的 Prime 和聯絡資料
+    authorization: str | None = Header(default=None),  # 接收登入 Token
+):  # 結束函式參數設定
+    user_id = get_user_id(authorization)  # 從 Token 取得會員 ID
+
+    if user_id is None:  # 如果使用者尚未登入
+        return JSONResponse(  # 回傳尚未登入訊息
+            status_code=401,  # 設定未授權狀態碼
+            content={"error": True, "message": "未登入會員"},  # 設定錯誤內容
+        )  # 結束錯誤回應
+
+    conn = get_connection()  # 連線到 MySQL
+    cursor = conn.cursor(dictionary=True)  # 建立字典格式游標
+
+    order_number = f"{datetime.now():%Y%m%d%H%M%S}{uuid.uuid4().hex[:8].upper()}"  # 產生唯一訂單編號
+
+    try:  # 開始訂單付款流程
+        cursor.execute(  # 查詢目前會員的預約
+            """SELECT b.price, a.name
+            FROM bookings AS b
+            JOIN attractions AS a ON b.attraction_id = a.id
+            WHERE b.user_id = %s""",  # 取得預約價格與景點名稱
+            (user_id,),  # 傳入會員 ID
+        )  # 結束預約查詢
+
+        booking = cursor.fetchone()  # 取得預約資料
+
+        if booking is None:  # 如果沒有待付款預約
+            return JSONResponse(  # 回傳錯誤訊息
+                status_code=400,  # 設定請求錯誤狀態碼
+                content={"error": True, "message": "目前沒有待付款的預約"},  # 設定錯誤內容
+            )  # 結束錯誤回應
+
+        price = booking["price"]  # 使用後端資料庫中的價格
+        details = f"台北一日遊：{booking['name']}"  # 建立交易品項說明
+
+        cursor.execute(  # 建立未付款訂單
+            """INSERT INTO orders (order_number, user_id, price, status)
+            VALUES (%s, %s, %s, 'UNPAID')""",  # 新增訂單並標記為未付款
+            (order_number, user_id, price),  # 傳入訂單資料
+        )  # 結束新增訂單
+
+        conn.commit()  # 儲存未付款訂單
+
+        tappay_response = requests.post(  # 呼叫 TapPay Pay By Prime API
+            "https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime",  # 使用 Sandbox API 網址
+            headers={  # 設定 TapPay API 標頭
+                "Content-Type": "application/json",  # 指定傳送 JSON
+                "x-api-key": TAPPAY_PARTNER_KEY,  # 傳送 Partner Key
+            },  # 結束標頭設定
+            json={  # 設定付款資料
+                "prime": order.prime,  # 傳送前端取得的 Prime
+                "partner_key": TAPPAY_PARTNER_KEY,  # 傳送 Partner Key
+                "merchant_id": TAPPAY_MERCHANT_ID,  # 傳送 Merchant ID
+                "details": details,  # 傳送交易品項說明
+                "amount": price,  # 使用後端計算的訂單金額
+                "currency": "TWD",  # 設定交易幣別為新台幣
+                "order_number": order_number,  # 傳送自訂訂單編號
+                "cardholder": {  # 設定持卡人資料
+                    "name": order.name,  # 傳送聯絡人姓名
+                    "email": order.email,  # 傳送聯絡人 Email
+                    "phone_number": order.phone,  # 傳送聯絡人手機
+                },  # 結束持卡人資料
+            },  # 結束付款資料
+            timeout=30,  # 設定 API 最長等待 30 秒
+        )  # 結束 TapPay API 請求
+
+        payment_result = tappay_response.json()  # 取得 TapPay 回應資料
+
+        if payment_result.get("status") == 0:  # 如果付款成功
+            cursor.execute(  # 更新訂單付款狀態
+                "UPDATE orders SET status = 'PAID' WHERE order_number = %s",  # 將訂單標記為已付款
+                (order_number,),  # 傳入訂單編號
+            )  # 結束更新訂單
+
+            conn.commit()  # 儲存已付款狀態
+
+            return {  # 回傳付款成功結果
+                "data": {"number": order_number},  # 回傳訂單編號
+            }  # 結束成功回應
+
+        return JSONResponse(  # 回傳付款失敗結果
+            status_code=400,  # 設定付款錯誤狀態碼
+            content={  # 設定錯誤內容
+                "error": True,  # 表示付款失敗
+                "message": payment_result.get("msg", "付款失敗"),  # 回傳 TapPay 錯誤訊息
+                "data": {"number": order_number},  # 回傳訂單編號
+            },  # 結束錯誤內容
+        )  # 結束付款失敗回應
+
+    except Exception as error:  # 捕捉訂單付款錯誤
+        conn.rollback()  # 發生錯誤時取消尚未提交的資料
+        return JSONResponse(  # 回傳伺服器錯誤
+            status_code=500,  # 設定伺服器錯誤狀態碼
+            content={"error": True, "message": str(error)},  # 回傳錯誤訊息
+        )  # 結束伺服器錯誤回應
 
     finally:  # 無論成功或失敗都會執行
         cursor.close()  # 關閉資料庫游標
