@@ -1,11 +1,93 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Thank You</title>
-</head>
-<body>
-  
-</body>
-</html>
+<!DOCTYPE html> <!-- 宣告使用 HTML5 -->
+<html lang="zh-Hant"> <!-- 設定網頁語言為繁體中文 -->
+
+<head> <!-- 開始設定網頁資訊 -->
+  <meta charset="UTF-8"> <!-- 設定文字編碼 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 支援 RWD -->
+  <title>訂購成功</title> <!-- 設定網頁標題 -->
+  <link rel="stylesheet" href="/static/index.css"> <!-- 載入共用樣式 -->
+  <link rel="stylesheet" href="/static/booking.css"> <!-- 載入預訂頁面的共用版面樣式 -->
+  <style> /* 設定訂購成功頁面的版面 */
+    .thankyou-content { /* 設定訂購成功內容區域 */
+      width: 100%; /* 讓內容區域填滿頁面寬度 */
+      padding-top: 40px; /* 設定內容與導覽列的距離 */
+      text-align: center; /* 將文字水平置中 */
+    } 
+    main.booking-page.empty-state { /* 設定訂購成功頁面的主要內容高度 */
+      height: 260px; /* 預留標題與訂單編號所需的高度 */
+    } 
+    .thankyou-content h1 { /* 設定訂購成功標題 */
+      margin: 0 0 20px; /* 移除預設上方間距並保留下方間距 */
+    } 
+    .thankyou-content p { /* 設定訂購成功文字 */
+      margin: 12px 0; /* 統一段落間距 */
+    } 
+  </style> <!-- 結束頁面樣式 -->
+</head> <!-- 結束設定網頁資訊 -->
+
+<body> <!-- 網頁內容 -->
+
+  <header class="nav-bar"> <!-- 建立導覽列 -->
+    <div class="nav-content"> <!-- 建立導覽列內容容器 -->
+      <a class="site-title" href="/">台北一日遊</a> <!-- 建立網站標題 -->
+      <nav class="nav-links"> <!-- 建立導覽連結區域 -->
+        <a class="booking-link" href="/booking">預訂行程</a> <!-- 建立預訂行程連結 -->
+        <a class="auth-link" href="#">登入/註冊</a> <!-- 建立登入註冊連結 -->
+      </nav> 
+    </div> 
+  </header> 
+
+  <main class="booking-page empty-state"> <!-- 使用預訂頁面的空狀態高度 -->
+    <section class="thankyou-content"> <!-- 建立置中的訂購成功內容區域 -->
+      <h1>訂購成功</h1> <!-- 顯示訂購成功標題 -->
+      <p>感謝您的訂購！</p> <!-- 顯示成功訊息 -->
+      <p>您的訂單編號是：<span id="order-number"></span></p> <!-- 顯示訂單編號 -->
+    </section> 
+  </main> 
+
+  <footer class="footer"> <!-- 建立網站頁尾 -->
+    <p class="footer-text">COPYRIGHT © 2021 台北一日遊</p> <!-- 顯示版權文字 -->
+  </footer> 
+
+  <div id="auth-modal" class="auth-modal hidden"> <!-- 建立登入註冊彈窗外層 -->
+    <div class="auth-backdrop"></div> <!-- 建立黑色半透明背景遮罩 -->
+    <div class="auth-dialog"> <!-- 建立登入註冊彈窗容器 -->
+      <div class="auth-decorator-bar"></div> <!-- 建立上方裝飾條 -->
+      <button id="auth-close-button" class="auth-close-button" type="button"> <!-- 建立關閉按鈕 -->
+        <img src="/static/images/close.png" alt="關閉"> <!-- 顯示關閉圖示 -->
+      </button> 
+      <div class="auth-main"> <!-- 建立彈窗主要內容區 -->
+        <div id="signin-view"> <!-- 建立登入畫面 -->
+          <h2 class="auth-title">登入會員帳號</h2> <!-- 顯示登入標題 -->
+          <form id="signin-form" class="auth-form"> <!-- 建立登入表單 -->
+            <input id="signin-email" type="email" placeholder="輸入電子信箱" required> <!-- 建立登入 Email 輸入框 -->
+            <input id="signin-password" type="password" placeholder="輸入密碼" required> <!-- 建立登入密碼輸入框 -->
+            <button type="submit">登入帳戶</button> <!-- 建立登入按鈕 -->
+          </form> <!-- 結束登入表單 -->
+          <p class="auth-switch">還沒有帳戶？<button id="show-signup-button" type="button">點此註冊</button></p> <!-- 建立切換註冊按鈕 -->
+          <p id="signin-message" class="auth-message"></p> <!-- 顯示登入錯誤訊息 -->
+        </div> <!-- 結束登入畫面 -->
+        <div id="signup-view" class="hidden"> <!-- 建立註冊畫面 -->
+          <h2 class="auth-title">註冊會員帳號</h2> <!-- 顯示註冊標題 -->
+          <form id="signup-form" class="auth-form"> <!-- 建立註冊表單 -->
+            <input id="signup-name" type="text" placeholder="輸入姓名" required> <!-- 建立註冊姓名輸入框 -->
+            <input id="signup-email" type="email" placeholder="輸入電子信箱" required> <!-- 建立註冊 Email 輸入框 -->
+            <input id="signup-password" type="password" placeholder="輸入密碼" required> <!-- 建立註冊密碼輸入框 -->
+            <button type="submit">註冊新帳戶</button> <!-- 建立註冊按鈕 -->
+          </form> <!-- 結束註冊表單 -->
+          <p class="auth-switch">已經有帳戶了？<button id="show-signin-button" type="button">點此登入</button></p> <!-- 建立切換登入按鈕 -->
+          <p id="signup-message" class="auth-message"></p> <!-- 顯示註冊錯誤訊息 -->
+        </div> <!-- 結束註冊畫面 -->
+      </div> <!-- 結束彈窗主要內容區 -->
+    </div> <!-- 結束登入註冊彈窗容器 -->
+  </div> <!-- 結束登入註冊彈窗外層 -->
+  <script src="/static/auth.js"></script> <!-- 載入共用會員功能 -->
+  <script> // 開始執行頁面 JavaScript
+    const params = new URLSearchParams(window.location.search); // 取得網址查詢參數
+    const orderNumber = params.get("number"); // 取得網址中的訂單編號
+    document.querySelector("#order-number").textContent = orderNumber || "無"; // 將訂單編號顯示在頁面上
+  </script> 
+
+</body> 
+
+</html> 

@@ -23,7 +23,7 @@ authLink.addEventListener("click", (event) => { // 監聽右上角登入／註�
   const token = localStorage.getItem("token"); // 取得瀏覽器中的 JWT Token
   if (token) { // 如果目前有 Token，代表使用者已登入
     localStorage.removeItem("token"); // 移除瀏覽器中的 JWT Token
-    location.reload(); // 重新整理頁面並更新登入狀態
+    window.location.href = "/"; // 登出後回到首頁
     return; // 結束函式
   }
   authModal.classList.remove("hidden"); // 沒有 Token 時顯示登入註冊彈窗
