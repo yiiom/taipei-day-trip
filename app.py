@@ -572,7 +572,12 @@ async def create_order(  # 建立訂單付款函式
                 (order_number,),  # 傳入訂單編號
             )  # 結束更新訂單
 
-            conn.commit()  # 儲存已付款狀態
+            cursor.execute(  # 付款成功後刪除目前使用者的預約資料
+                "DELETE FROM bookings WHERE user_id = %s",  # 只刪除目前登入者的預約
+                (user_id,),  # 傳入目前登入者的 ID
+            )  # 結束刪除預約
+
+            conn.commit()  # 一起儲存已付款狀態與預約刪除
 
             return {  # 回傳付款成功結果
                 "data": {"number": order_number},  # 回傳訂單編號
