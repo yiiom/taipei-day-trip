@@ -689,3 +689,52 @@ body {
   width: 16px; 
   height: 16px; 
 }
+
+.member-page { /* 設定會員頁面主要內容區 */
+  max-width: 1200px; /* 限制內容最大寬度 */
+  margin: 0 auto; /* 讓內容水平置中 */
+  padding: 40px 10px; /* 設定上下與左右內距 */
+}
+
+.member-page > p { /* 選取會員問候文字區塊 */
+  padding-bottom: 30px; /* 分隔線與文字之間保留距離 */
+  border-bottom: 1px solid #eeeeee; /* 在問候文字下方建立灰色分隔線 */
+}
+
+.mcp-section { /* 設定 MCP 設定區塊 */
+  padding: 30px 0; /* 設定區塊上下內距 */
+  border-bottom: 1px solid #eeeeee; /* 在 MCP 區塊下方建立灰色分隔線 */
+}
+
+.mcp-section button, /* 選取 MCP 區塊中的按鈕 */
+#logout-button { /* 同時選取登出按鈕 */
+  padding: 10px 16px; /* 設定按鈕內距 */
+  border: 0; /* 移除按鈕預設邊框 */
+  border-radius: 4px; /* 設定按鈕圓角 */
+  background-color: #448899; /* 設定按鈕背景顏色 */
+  color: #ffffff; /* 設定按鈕文字顏色 */
+  font-size: 16px; /* 設定按鈕文字大小 */
+  cursor: pointer; /* 滑鼠移入時顯示可點擊游標 */
+}
+
+#logout-button { /* 設定登出按鈕位置 */
+  margin-top: 30px; /* 與上方 MCP 區塊保留距離 */
+}
+#mcp-token { /* 設定 Bearer Token 顯示區塊 */
+  display: block; /* 讓 Token 單獨佔一行 */
+  margin-top: 10px; /* 與 Bearer Token 標籤保留距離 */
+  line-height: 1.8; /* 增加 Token 行高 */
+  word-break: break-all; /* Token 太長時允許自動換行 */
+}
+
+#generate-token-button { /* 設定產生／更新金鑰按鈕 */
+  display: block; /* 讓按鈕移到下一行 */
+  margin-top: 20px; /* 與 Token 保留上方距離 */
+}
+.member-nav-bar { /* 設定會員頁面導覽列 */
+  border-bottom: 1px solid #eeeeee; /* 在導覽列下方建立分隔線 */
+}
+.mcp-section h3 { /* 設定 MCP 伺服器設定標題 */
+  font-size: 16px; /* 使用和下方內容相同的文字大小 */
+  font-weight: 400; /* 使用一般字體，不使用粗體 */
+}

@@ -1,0 +1,43 @@
+<!DOCTYPE html> 
+<html lang="zh-Hant"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>會員中心｜台北一日遊</title> 
+  <link rel="stylesheet" href="/static/index.css"> <!-- 載入網站既有樣式 -->
+</head> 
+<body> <!-- 網頁內容開始 -->
+  <header class="nav-bar member-nav-bar"> <!-- 建立會員頁面導覽列 -->
+    <div class="nav-content"> <!-- 建立導覽列內容容器 -->
+      <a class="site-title" href="/">台北一日遊</a> <!-- 點擊網站名稱回到首頁 -->
+      <nav class="nav-links"> <!-- 建立右側導覽連結區 -->
+        <a class="booking-link" href="/booking">預訂行程</a> <!-- 前往預訂行程頁面 -->
+        <a class="auth-link" href="/member">會員中心</a> <!-- 會員中心連結，只修改會員頁面 -->
+      </nav> <!-- 結束導覽連結區 -->
+    </div> <!-- 結束導覽列內容容器 -->
+  </header> <!-- 結束網站導覽列 -->
+
+  <main class="member-page"> <!-- 建立會員頁面主要內容 -->
+    <h2 class="member-greeting">您好，<span id="member-name"></span>：</h2> <!-- 顯示粗體會員問候文字與冒號 -->
+    <section class="mcp-section"> <!-- 建立 MCP 伺服器設定區塊 -->
+      <h2>AI 工具整合</h2> <!-- 顯示 AI 工具整合標題 -->
+      <h3>MCP 伺服器設定：</h3> <!-- 顯示 MCP 伺服器設定標題 -->
+    <ul> <!-- 建立 MCP 設定項目清單 -->
+       <li>Host URL</li> <!-- 顯示 Host URL 標籤 -->
+       <code id="mcp-host-url"></code> <!-- 顯示 MCP Host URL -->
+       <li>Bearer Token</li> <!-- 顯示 Bearer Token 標籤 -->
+       <code id="mcp-token">尚未產生</code> <!-- 顯示 Bearer Token -->
+    </ul> <!-- 結束 MCP 設定項目清單 -->
+      <button id="generate-token-button" type="button">產生／更新金鑰</button> <!-- 產生新的 Token -->
+      <p id="token-message"></p> <!-- 顯示 Token 操作結果 -->
+    </section> <!-- 結束 MCP 設定區塊 -->
+    <button id="logout-button" type="button">登出會員</button> <!-- 登出目前會員 -->
+  </main> <!-- 結束會員頁面主要內容 -->
+
+  <footer class="footer"> <!-- 建立頁尾 -->
+    <p class="footer-text">COPYRIGHT © 2021 台北一日遊</p> <!-- 顯示版權文字 -->
+  </footer> <!-- 結束頁尾 -->
+
+  <script src="/static/member.js"></script> <!-- 載入會員頁面 JavaScript -->
+</body> <!-- 網頁內容結束 -->
+</html> 

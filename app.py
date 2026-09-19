@@ -2,14 +2,17 @@ import os  # 匯入讀取環境變數的工具
 import json
 import requests  # 匯入 requests，用來呼叫 TapPay 後端 API
 import uuid  # 匯入 uuid，用來產生唯一訂單編號
+import secrets  # 匯入安全亂數工具，用來產生 MCP Bearer Token
 from fastapi import FastAPI,Request,Header
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from db import get_connection
 from pydantic import BaseModel  # 匯入 BaseModel，用來定義前端傳來的資料格式
+from mcp_server import mcp  # 匯入台北一日遊 MCP 伺服器
 import jwt  # 匯入 PyJWT，用來產生和解碼 JWT Token
 from datetime import datetime, timedelta, timezone  # 匯入時間工具，用來設定 Token 有效期限
 app=FastAPI()
+app.mount("/mcp", mcp.http_app())  # 將 MCP 伺服器掛載到 /mcp/ 路徑
 JWT_SECRET = os.getenv("JWT_SECRET")  # 從環境變數讀取 JWT 密鑰
 JWT_ALGORITHM = "HS256"  # 設定 JWT 使用的加密演算法
 TAPPAY_PARTNER_KEY = os.getenv("TAPPAY_PARTNER_KEY")  # 從環境變數讀取 TapPay Partner Key
@@ -48,6 +51,32 @@ class OrderCreate(BaseModel):  # 建立訂單付款資料格式
     name: str  # 接收聯絡人姓名
     email: str  # 接收聯絡人 Email
     phone: str  # 接收聯絡人手機號碼
+
+@app.get("/member", include_in_schema=False)  # 建立會員頁面的網址路由，並從 API 文件中隱藏
+async def member(request: Request):  # 建立處理會員頁面請求的非同步函式
+    return FileResponse("./static/member.html", media_type="text/html")  # 回傳 static 資料夾中的會員頁面
+
+@app.post("/api/member/mcp-token")  # 建立產生 MCP Token 的 API
+async def create_member_mcp_token(authorization: str | None = Header(default=None)):  # 接收登入者的 Authorization 標頭
+    user_id = get_user_id(authorization)  # 從登入 JWT Token 取得會員 ID
+    if user_id is None:  # 如果無法取得會員 ID
+        return JSONResponse(status_code=401, content={"error": True, "message": "請先登入會員"})  # 回傳未登入錯誤
+
+    mcp_token = secrets.token_urlsafe(32)  # 產生安全且隨機的 MCP Bearer Token
+    conn = get_connection()  # 建立資料庫連線
+    cursor = conn.cursor()  # 建立資料庫游標
+
+    try:  # 開始執行資料庫操作
+        cursor.execute("""CREATE TABLE IF NOT EXISTS member_mcp_tokens (user_id INT NOT NULL PRIMARY KEY, token VARCHAR(128) NOT NULL UNIQUE, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)""")  # 如果資料表不存在就建立
+        cursor.execute("""INSERT INTO member_mcp_tokens (user_id, token) VALUES (%s, %s) ON DUPLICATE KEY UPDATE token = VALUES(token), created_at = CURRENT_TIMESTAMP""", (user_id, mcp_token))  # 新增或更新目前會員的 Token
+        conn.commit()  # 確認儲存資料庫變更
+        return {"data": {"token": mcp_token}}  # 回傳新的 MCP Token
+    except Exception as error:  # 捕捉資料庫操作錯誤
+        conn.rollback()  # 發生錯誤時取消資料庫變更
+        return JSONResponse(status_code=500, content={"error": True, "message": str(error)})  # 回傳伺服器錯誤
+    finally:  # 無論成功或失敗都執行清理
+        cursor.close()  # 關閉資料庫游標
+        conn.close()  # 關閉資料庫連線
 
 def get_user_id(authorization: str | None) -> int | None:  # 建立取得登入者 ID 的函式
     if not authorization or not authorization.startswith("Bearer "):  # 檢查是否有 Bearer Token

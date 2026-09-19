@@ -22,8 +22,7 @@ authLink.addEventListener("click", (event) => { // 監聽右上角登入／註�
   event.preventDefault(); // 阻止連結預設跳轉行為
   const token = localStorage.getItem("token"); // 取得瀏覽器中的 JWT Token
   if (token) { // 如果目前有 Token，代表使用者已登入
-    localStorage.removeItem("token"); // 移除瀏覽器中的 JWT Token
-    window.location.href = "/"; // 登出後回到首頁
+    window.location.href = "/member"; // 前往會員中心頁面
     return; // 結束函式
   }
   authModal.classList.remove("hidden"); // 沒有 Token 時顯示登入註冊彈窗
@@ -77,10 +76,12 @@ async function checkSigninStatus() { // 建立檢查登入狀態的函式
   });
   const data = await response.json(); // 讀取後端回傳資料
   if (response.ok && data.data) { // 如果 Token 有效且取得使用者資料
-    authLink.textContent = "登出系統"; // 顯示登出系統文字
+    authLink.textContent = "會員中心"; // 登入後顯示會員中心文字
+    authLink.href = "/member"; // 將會員中心連結到會員頁面
   } else { // 如果 Token 無效或已過期
     localStorage.removeItem("token"); // 移除無效的 Token
     authLink.textContent = "登入/註冊"; // 改回登入／註冊文字
+    authLink.href = "#"; // 未登入時維持開啟登入視窗的連結
   }
 } // 結束檢查登入狀態函式
 
